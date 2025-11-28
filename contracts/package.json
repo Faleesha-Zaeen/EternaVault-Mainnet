@@ -1,0 +1,13 @@
+{
+  "name": "eternavault-contracts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "npx hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "dotenv": "^16.4.1",
+    "hardhat": "^2.22.1"
+  }
+}

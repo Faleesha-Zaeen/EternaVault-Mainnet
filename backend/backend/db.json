@@ -1,0 +1,53 @@
+{
+  "files": [
+    {
+      "id": "AM3mgl7x7StMhEuEiBQu8",
+      "ownerDid": "demo-owner",
+      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\AM3mgl7x7StMhEuEiBQu8.enc",
+      "meta": {
+        "ownerDid": "demo-owner",
+        "originalName": ".gitignore",
+        "timestamp": "2025-11-25T13:25:39.712Z",
+        "cryptoMeta": {
+          "iv": [
+            41,
+            56,
+            7,
+            195,
+            223,
+            12,
+            169,
+            230,
+            18,
+            152,
+            251,
+            1
+          ],
+          "salt": [
+            250,
+            69,
+            209,
+            149,
+            144,
+            145,
+            109,
+            227,
+            190,
+            199,
+            32,
+            216,
+            112,
+            198,
+            41,
+            207
+          ],
+          "originalName": ".gitignore",
+          "type": "text/plain"
+        }
+      },
+      "timestamp": "2025-11-25T13:25:39.743Z"
+    }
+  ],
+  "dids": [],
+  "statuses": {}
+}
