@@ -46,8 +46,215 @@
         }
       },
       "timestamp": "2025-11-25T13:25:39.743Z"
+    },
+    {
+      "id": "Aiv9hwsiEsSfkdbz7W9Ux",
+      "ownerDid": "demo-owner",
+      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\Aiv9hwsiEsSfkdbz7W9Ux.enc",
+      "meta": {
+        "ownerDid": "demo-owner",
+        "originalName": "Gemini_Generated_Image_pz9cw4pz9cw4pz9c.png",
+        "timestamp": "2025-11-30T16:27:29.751Z",
+        "cryptoMeta": {
+          "iv": [
+            158,
+            45,
+            152,
+            180,
+            12,
+            137,
+            63,
+            116,
+            185,
+            199,
+            126,
+            3
+          ],
+          "salt": [
+            30,
+            94,
+            203,
+            38,
+            226,
+            242,
+            187,
+            66,
+            183,
+            126,
+            85,
+            185,
+            216,
+            162,
+            45,
+            121
+          ],
+          "originalName": "Gemini_Generated_Image_pz9cw4pz9cw4pz9c.png",
+          "type": "image/png"
+        }
+      },
+      "cid": null,
+      "anchored": false,
+      "timestamp": "2025-11-30T16:27:29.852Z"
+    },
+    {
+      "id": "54cVi76eQZoUH9Bfk-unX",
+      "ownerDid": "demo-owner",
+      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\54cVi76eQZoUH9Bfk-unX.enc",
+      "meta": {
+        "ownerDid": "demo-owner",
+        "originalName": "neoslot11.jpeg",
+        "timestamp": "2025-11-30T16:41:09.523Z",
+        "cryptoMeta": {
+          "iv": [
+            253,
+            82,
+            192,
+            220,
+            218,
+            163,
+            95,
+            51,
+            61,
+            143,
+            171,
+            46
+          ],
+          "salt": [
+            101,
+            160,
+            29,
+            232,
+            69,
+            170,
+            89,
+            124,
+            57,
+            44,
+            25,
+            224,
+            210,
+            28,
+            81,
+            124
+          ],
+          "originalName": "neoslot11.jpeg",
+          "type": "image/jpeg"
+        }
+      },
+      "cid": null,
+      "anchored": false,
+      "timestamp": "2025-11-30T16:41:09.610Z"
+    },
+    {
+      "id": "cyNQtUEWf97I9fBXU6hGB",
+      "ownerDid": "demo-owner",
+      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\cyNQtUEWf97I9fBXU6hGB.enc",
+      "meta": {
+        "ownerDid": "demo-owner",
+        "originalName": "Screenshot (34).png",
+        "timestamp": "2025-11-30T17:21:36.465Z",
+        "cryptoMeta": {
+          "iv": [
+            140,
+            185,
+            185,
+            33,
+            247,
+            198,
+            144,
+            27,
+            17,
+            28,
+            158,
+            151
+          ],
+          "salt": [
+            139,
+            80,
+            46,
+            57,
+            159,
+            64,
+            248,
+            59,
+            42,
+            222,
+            215,
+            183,
+            71,
+            231,
+            185,
+            124
+          ],
+          "originalName": "Screenshot (34).png",
+          "type": "image/png"
+        }
+      },
+      "cid": null,
+      "anchored": false,
+      "timestamp": "2025-11-30T17:21:36.539Z"
+    },
+    {
+      "id": "BK2fzefpfXVcQ-kxbPFEt",
+      "ownerDid": "demo-owner",
+      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\BK2fzefpfXVcQ-kxbPFEt.enc",
+      "meta": {
+        "ownerDid": "demo-owner",
+        "originalName": "Screenshot (59).png",
+        "timestamp": "2025-11-30T17:27:58.266Z",
+        "cryptoMeta": {
+          "iv": [
+            150,
+            93,
+            186,
+            173,
+            139,
+            252,
+            154,
+            171,
+            225,
+            167,
+            216,
+            178
+          ],
+          "salt": [
+            220,
+            149,
+            85,
+            101,
+            66,
+            127,
+            42,
+            124,
+            130,
+            137,
+            17,
+            5,
+            226,
+            111,
+            105,
+            54
+          ],
+          "originalName": "Screenshot (59).png",
+          "type": "image/png"
+        }
+      },
+      "cid": null,
+      "anchored": false,
+      "timestamp": "2025-11-30T17:27:58.325Z"
     }
   ],
   "dids": [],
-  "statuses": {}
+  "statuses": {
+    "demo-owner": {
+      "deceased": true,
+      "markedAt": "2025-12-01T09:32:07.757Z"
+    }
+  },
+  "profile": {
+    "demo-owner": {
+      "tokenAddress": " 0x1234567845389",
+      "marketLink": "https://test.com"
+    }
+  }
 }

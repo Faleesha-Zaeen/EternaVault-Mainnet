@@ -21,6 +21,7 @@ function buildSummary(date, files) {
 function Timeline() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [anchoring, setAnchoring] = useState({});
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -36,6 +37,28 @@ function Timeline() {
     };
     fetchFiles();
   }, []);
+
+  const anchorFile = async (fileId) => {
+    try {
+      setAnchoring((s) => ({ ...s, [fileId]: true }));
+      const res = await fetch('/api/anchor-cid', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileId }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setFiles((f) => f.map((item) => (item.id === fileId ? { ...item, anchored: true, anchorTxHash: data.txHash } : item)));
+      } else {
+        alert(`Anchor failed: ${data.message || data.error}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Anchor failed — see console for details');
+    } finally {
+      setAnchoring((s) => ({ ...s, [fileId]: false }));
+    }
+  };
 
   if (loading) return <p>Loading vault timeline...</p>;
 
@@ -56,8 +79,36 @@ function Timeline() {
             <p className="text-sm text-emerald-300 mb-1">{buildSummary(date, group)}</p>
             <ul className="text-xs text-slate-300 list-disc list-inside">
               {group.map((f) => (
-                <li key={f.id}>
-                  {f.meta?.originalName || 'Encrypted file'} ({f.id})
+                <li key={f.id} className="flex items-center justify-between gap-4">
+                  <div>
+                    <div className="font-medium">{f.meta?.originalName || 'Encrypted file'}</div>
+                    <div className="text-xs text-slate-400">ID: {f.id}</div>
+                    {f.cid && <div className="text-xs text-slate-400">CID: {f.cid}</div>}
+                    {f.anchored && f.anchorTxHash && (
+                      <div>
+                        <div className="text-xs text-emerald-300">Anchored on QIE ✅</div>
+                        <a
+                          href={`https://testnet.qie.digital/tx/${f.anchorTxHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-emerald-400 underline text-sm"
+                        >
+                          View on Explorer
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    {!f.anchored && f.cid && (
+                      <button
+                        className="px-3 py-1 bg-emerald-600 text-xs rounded-md"
+                        disabled={!!anchoring[f.id]}
+                        onClick={() => anchorFile(f.id)}
+                      >
+                        {anchoring[f.id] ? 'Anchoring…' : 'Anchor on QIE'}
+                      </button>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>

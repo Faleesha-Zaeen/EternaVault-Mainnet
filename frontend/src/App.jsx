@@ -5,6 +5,7 @@ import Upload from './pages/Upload.jsx';
 import Timeline from './pages/Timeline.jsx';
 import HeirDashboard from './pages/HeirDashboard.jsx';
 import ValidatorDashboard from './pages/ValidatorDashboard.jsx';
+import TokenizationInfo from './pages/TokenizationInfo.jsx';
 
 function App() {
   console.log("WEB3 KEY:", import.meta.env.VITE_WEB3_STORAGE_KEY);
@@ -21,6 +22,7 @@ function App() {
             <Link to="/timeline" className="hover:text-emerald-300">Timeline</Link>
             <Link to="/heir" className="hover:text-emerald-300">Heir</Link>
             <Link to="/validator" className="hover:text-emerald-300">Validator</Link>
+            <Link to="/tokenization" className="hover:text-emerald-300">Tokenization (DLT)</Link>
           </nav>
         </div>
       </header>
@@ -31,6 +33,7 @@ function App() {
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/heir" element={<HeirDashboard />} />
             <Route path="/validator" element={<ValidatorDashboard />} />
+            <Route path="/tokenization" element={<TokenizationInfo />} />
         </Routes>
       </main>
       <footer className="border-t border-slate-800 text-xs text-slate-400 py-4 text-center">
