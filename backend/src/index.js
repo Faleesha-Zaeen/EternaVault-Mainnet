@@ -2,25 +2,39 @@ import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
 import dotenv from 'dotenv';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
 import { nanoid } from 'nanoid';
 import fs from 'fs';
 import { JsonRpcProvider, Wallet, Contract } from 'ethers';
+import fetch from 'node-fetch';
 import validatorsRouter from './routes/validators.js';
 import filesRouter from './routes/files.js';
 import profileRouter from './routes/profile.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 dotenv.config();
+console.log("🔍 ENV CHECK:");
+console.log("QIE_RPC_URL:", process.env.QIE_RPC_URL);
+console.log("PRIVATE_KEY:", process.env.PRIVATE_KEY?.slice(0,8) + "..."); // don't expose full key
+console.log("VAULT_ADDRESS:", process.env.VAULT_ADDRESS);
 
 // --- Contract helper (LegacyVault) ---
 let LegacyVaultAbi = null;
 try {
-  const abiPath = join(process.cwd(), 'backend', 'src', 'abi', 'LegacyVault.json');
-  LegacyVaultAbi = JSON.parse(fs.readFileSync(abiPath, 'utf-8'));
+  const abiPath = join(__dirname, 'abi', 'LegacyVault.json');
+  const parsedAbi = JSON.parse(fs.readFileSync(abiPath, 'utf-8'));
+  LegacyVaultAbi = Array.isArray(parsedAbi) ? parsedAbi : parsedAbi?.abi;
+  if (!LegacyVaultAbi) {
+    throw new Error('LegacyVault ABI file missing ABI array');
+  }
+  console.log(`✅ Loaded LegacyVault ABI (${LegacyVaultAbi.length} entries)`);
 } catch (e) {
-  // ABI may be missing in some dev environments — helper will throw when used
+  console.error('Failed to load LegacyVault ABI:', e.message);
   LegacyVaultAbi = null;
 }
 
@@ -210,6 +224,55 @@ app.post('/api/register-heir', async (req, res) => {
   } catch (err) {
     console.error('registerHeirs failed:', err);
     res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+app.post('/api/generate-story', async (req, res) => {
+  try {
+    const { did } = req.body || {};
+    if (!did) return res.status(400).json({ ok: false, error: 'Missing DID' });
+
+    await db.read();
+    const files = db.data.files.filter((f) => f.ownerDid === did);
+    if (!files.length) {
+      return res.json({ ok: false, message: 'No files available to summarize.' });
+    }
+
+    const summaryData = files.map((file) => ({
+      filename: file.meta?.originalName,
+      timestamp: file.timestamp,
+      type: file.meta?.originalName?.split('.').pop() || 'unknown',
+    }));
+
+    const GEMINI_KEY = process.env.GEMINI_API_KEY;
+    if (!GEMINI_KEY) {
+      return res.status(500).json({ ok: false, error: 'Missing GEMINI_API_KEY' });
+    }
+
+    const aiPrompt = `Create a sentimental, heartwarming memorial-style biography using the following preserved memories. DO NOT mention file extensions.\n\nMemories:\n${JSON.stringify(summaryData, null, 2)}\n\nTone: Emotional, respectful, reflective. Write 2–5 paragraphs.`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: 'user',
+              parts: [{ text: aiPrompt }],
+            },
+          ],
+        }),
+      },
+    );
+
+    const data = await response.json();
+    const story = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated';
+    return res.json({ ok: true, story });
+  } catch (err) {
+    console.error('generate-story failed:', err);
+    return res.status(500).json({ ok: false, error: err.message });
   }
 });
 

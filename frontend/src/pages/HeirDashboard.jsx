@@ -10,6 +10,7 @@ function HeirDashboard() {
   const [unlockResult, setUnlockResult] = useState(null);
   const [deathStatus, setDeathStatus] = useState(null);
   const [activating, setActivating] = useState(false);
+  const [aiStory, setAiStory] = useState('');
 
   useEffect(() => {
     const fetchDeathStatus = async () => {
@@ -103,6 +104,27 @@ function HeirDashboard() {
     } catch (err) {
       console.error(err);
       setMessage('Failed to decrypt. Check passphrase and try again.');
+    }
+  };
+
+  const generateStory = async () => {
+    setMessage('Generating AI legacy narrative...');
+    try {
+      const res = await fetch('/api/generate-story', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ did: 'demo-owner' }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setAiStory(data.story);
+        setMessage('AI Story generated ✔');
+      } else {
+        setMessage('Failed to generate story.');
+      }
+    } catch (err) {
+      console.error('generateStory failed', err);
+      setMessage('Story generation failed — see console.');
     }
   };
 
@@ -202,6 +224,13 @@ function HeirDashboard() {
           className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
           placeholder="Passphrase chosen by the owner"
         />
+        <button
+          type="button"
+          onClick={generateStory}
+          className="mt-3 px-4 py-2 rounded-md bg-purple-500 text-sm font-semibold hover:bg-purple-400"
+        >
+          🧠 Generate AI Legacy Story
+        </button>
       </div>
       {unlockResult ? (
         unlockResult.allowed ? (
@@ -237,6 +266,12 @@ function HeirDashboard() {
         )
       ) : (
         <p className="text-sm text-slate-400">Check unlock status to see available files.</p>
+      )}
+      {aiStory && (
+        <div className="mt-6 p-4 border border-purple-300 rounded-md bg-purple-900/30">
+          <h3 className="font-semibold text-lg mb-2">📜 Legacy Story</h3>
+          <p className="whitespace-pre-line text-sm">{aiStory}</p>
+        </div>
       )}
       {message && <p className="mt-4 text-xs text-slate-300">{message}</p>}
     </section>
