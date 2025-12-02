@@ -1,84 +1,307 @@
-# EternaVault – Where Identity Meets Eternity
+# EternaVault · QIE Digital Legacy Vault
 
-EternaVault is a digital legacy vault designed for the QIE Blockchain Hackathon. Users can upload and client-side-encrypt important memories, which are stored off-chain while being anchored on the QIE Testnet via smart contracts. After a death notification or unlock time, designated heirs can access encrypted assets. The project explores how self-sovereign identity, encryption, and smart contracts can work together for long-term digital inheritance.
+**EternaVault is a decentralized digital inheritance system where encrypted memories unlock only after on-chain confirmation of death.**
 
-This repository is a monorepo containing the frontend (Vite + React + Tailwind), backend (Node.js + Express + lowdb), and smart contracts (Hardhat + Solidity) for the EternaVault prototype.
+Today, digital assets outlive their owners—but access is chaotic, insecure, or lost entirely. EternaVault introduces programmable inheritance: encrypted memories that unlock only when QIE validators confirm it is time, blending trustless contracts with human empathy.
 
-## How to run locally
+EternaVault is a hackathon-ready prototype that mixes client-side encryption, self-sovereign identity concepts, and QIE smart contracts so people can preserve their most important files and grant heirs access only when the right on-chain signals fire. The monorepo contains:
+
+> 🚀 **Demo URL:** coming soon (run locally via `npm run dev` for now)
+
+- `frontend/` – Vite + React + Tailwind UI for uploads, timelines, validators, tokenization, heirs, and AI storytelling
+- `backend/` – Express + lowdb API that manages encrypted blobs, contract calls, Gemini prompts, and DID/profile data
+- `contracts/` – Hardhat workspace containing the `LegacyVault.sol` contract deployed to the QIE Testnet
+
+> ⚖️ **Prototype Only** – This is NOT a production inheritance system nor legal advice. Always involve real legal counsel and compliance experts before building on these ideas.
+
+---
+
+## Quick Facts
+
+- **Goal:** Preserve encrypted memories, anchor them to the QIE Testnet, and grant heirs access once validators or death events confirm eligibility.
+- **Core differentiator:** Client-side encryption + on-chain governance + optional AI narrative of a person’s life.
+- **Primary contract:** `LegacyVault.sol` (register heirs/validators, mark deceased, map fileId → CID).
+- **Latest highlight:** Gemini-powered “AI Legacy Story” generator with placeholder PDF export path.
+- **Status:** Hackathon MVP (alpha). Not audited.
+
+---
+
+## Why This Matters
+
+- Most decentralized storage tools encrypt files, but **the moment of access is never programmable**—EternaVault ties unlock rights to verifiable death events.
+- **Death-based governance** combines validator attestations with smart contracts so heirs gain access only when QIE confirms it.
+- **AI storytelling** turns cryptographic blobs into human narratives, preserving emotion alongside encrypted data.
+- Families retain sovereignty: encrypted data stays client-side, while anchors and policies live on-chain for resilience.
+
+---
+
+## UI Preview
+
+| Upload | Heir Dashboard |
+| ------ | -------------- |
+| ![Upload Screen Preview](assets/upload.png) | ![Heir Dashboard Preview](assets/heir-dashboard.png) |
+
+_(Add screenshots/GIFs above to give judges instant visual context.)_
+
+---
+
+## Table of Contents
+
+1. [Quick Facts](#quick-facts)
+2. [Why This Matters](#why-this-matters)
+3. [UI Preview](#ui-preview)
+4. [Feature Highlights](#feature-highlights)
+5. [Architecture](#architecture)
+6. [Prerequisites](#prerequisites)
+7. [Environment Variables](#environment-variables)
+8. [Quick Start](#quick-start)
+9. [Common Workflows](#common-workflows)
+10. [API Surface](#api-surface)
+11. [Smart Contract Overview](#smart-contract-overview)
+12. [Demo Script for Judges](#demo-script-for-judges)
+13. [Troubleshooting (Quick)](#troubleshooting-quick)
+14. [Directory Layout](#directory-layout)
+15. [Data Flow](#data-flow)
+16. [Security & Privacy](#security--privacy)
+17. [Roadmap & Ideas](#roadmap--ideas)
+18. [FAQ (Short)](#faq-short)
+19. [Credits & License](#credits--license)
+
+---
+
+## Feature Highlights
+
+- **Client-side encrypted memories** – Files are sealed with AES-GCM in the browser before upload so the backend never sees plaintext.
+- **Off-chain storage + QIE anchoring** – Encrypted blobs live in `backend/storage` or Web3.Storage/IPFS, while their CIDs can be anchored to `LegacyVault` (fileId → CID mapping).
+- **Heir & validator flows** – The Heir Dashboard checks `canAccess`, marks legacies as deceased, registers heirs on-chain, and downloads/decrypts files. The Validator view lets wallets call `registerValidator`.
+- **Tokenization (DLT) page** – Owners can link a QIEDEX-created Digital Legacy Token to their DID/profile to illustrate future token-gated inheritance tiers.
+- **AI Legacy Storytelling** – With a valid `GEMINI_API_KEY`, heirs convert metadata about preserved files into a sentimental multi-paragraph story powered by the Gemini `generateContent` API.
+- **Low-lift persistence** – lowdb keeps files, profile, DID, and status records in JSON for reproducible demos.
+
+---
+
+## Architecture
+
+| Layer        | Key Tech                          | Responsibilities |
+|--------------|-----------------------------------|------------------|
+| Frontend     | Vite, React, Tailwind             | Upload encryption, timeline, validator UI, heir dashboard, AI story modal, tokenization page |
+| Backend      | Express, lowdb, ethers v6, node-fetch | File metadata API, Web3.Storage fallback, QIE contract helper, death-status tracker, Gemini proxy |
+| Smart Contract | Solidity (`LegacyVault.sol`), Hardhat | Register validators/heirs, mark deceased, set CIDs, expose `canAccess` | 
+
+Supporting pieces:
+- `scripts/setup.(sh|ps1)` install workspace deps for Windows/macOS/Linux.
+- Nodemon dev server auto-reloads backend on source changes.
+- `frontend/src/utils/crypto.js` handles client-side AES-GCM.
+
+---
+
+## Prerequisites
+
+- Node.js 18+
+- npm 9+
+- (Optional) Web3.Storage account for real IPFS uploads
+- (Optional) Google Gemini API key for AI storytelling
+- (Optional) QIE Testnet wallet with test funds to execute on-chain calls
+
+---
+
+## Environment Variables
+
+Create `.env` in the repo root (or copy from `.env.example`) and fill the values you have available:
+
+| Variable | Description |
+|----------|-------------|
+| `QIE_RPC_URL` | QIE Testnet RPC endpoint (e.g., `https://rpc1testnet.qie.digital/`) |
+| `QIE_CHAIN_ID` | Chain ID for the selected QIE network |
+| `PRIVATE_KEY` | Backend signer for contract calls (never commit real keys) |
+| `VAULT_ADDRESS` | Deployed `LegacyVault` contract address |
+| `FRONTEND_PORT` | Port for Vite dev server (defaults to `5173`) |
+| `WEB3_STORAGE_KEY` | Backend token for Web3.Storage (optional) |
+| `VITE_WEB3_STORAGE_KEY` | Frontend token for direct uploads (optional) |
+| `STORAGE_PROVIDER` | `NFT_STORAGE`/`WEB3_STORAGE`/`LOCAL` hint for future providers |
+| `GEMINI_API_KEY` | Google Generative Language key used by `/api/generate-story` |
+
+The frontend also respects `frontend/.env.local` for Vite-specific overrides.
+
+---
+
+## Quick Start
 
 ```bash
-cp .env.example .env
-# Edit .env and fill values (QIE testnet only)
-# QIE_RPC_URL, QIE_CHAIN_ID, PRIVATE_KEY, FRONTEND_PORT
+git clone https://github.com/Faleesha-Zaeen/EternaVault.git
+cd EternaVault
 
-npm install
-npm run setup
-npm run dev
-# Frontend will be available at http://localhost:5173 (or FRONTEND_PORT)
+cp .env.example .env           # then edit with your values
+npm install                    # installs root + workspaces via npm workspaces
+
+# Option 1: one command for both servers
+npm run dev                    # concurrently starts backend + frontend
+
+# Option 2: run separately
+cd backend && npm run dev      # http://localhost:4000
+cd frontend && npm run dev     # http://localhost:5173
+
+# Contracts
+cd contracts && npx hardhat compile
 ```
 
-## Ethics & Legal
+> Windows users can also run `npm run setup:ps1` to execute `scripts/setup.ps1` if WSL/bash isn’t configured.
 
-This project is an experimental prototype built for a hackathon. It is **not** legal advice and does not constitute a production-ready inheritance solution. Real-world use of digital legacy or inheritance products must comply with local laws, data protection regulations, and involve qualified legal professionals.
+Useful scripts from `package.json`:
 
-## QIE Integration (Phase 1)
+| Script | What it does |
+|--------|--------------|
+| `npm run dev` | Runs backend (`npm run server`) + frontend (`npm run client`) concurrently |
+| `npm run build` | Builds the frontend for production |
+| `npm run test:*` | Placeholder commands for frontend/backend/contract tests |
 
-- The `LegacyVault.sol` contract is deployable to QIE Testnet via Hardhat.
-- The backend includes a QIE configuration helper ready to connect to the testnet, but contract calls are intentionally minimal in this phase.
-- Future phases can wire death notifications and unlock logic on-chain and anchor off-chain file references (e.g., IPFS/Web3Storage CIDs) to the QIE network.
+---
 
-## Validator Integration – QIE Bonus
+## Common Workflows
 
-This phase adds a simple validator registration flow to qualify for QIE validator bonus points.
+1. **Upload & encrypt a memory** – Navigate to *Upload*, drop a file, enter metadata + passphrase. The file is encrypted locally before hitting the backend.
+2. **Check timeline & anchor** – Visit *Timeline* to see version history, copy the CID, and anchor it on-chain if the backend signer + contract are configured.
+3. **Register validators** – Open */validator*, connect an address, and register via the backend calling `registerValidator`.
+4. **Activate legacy & unlock** – On *Heir Dashboard*, mark the owner as deceased (backend calls `markDeceased`), register a heir on-chain, and run *Check Unlock Status* to see files become available for download/decrypt.
+5. **Generate AI legacy story** – After files exist, click **🧠 Generate AI Legacy Story**. The backend summarizes metadata, prompts Gemini, and renders a sentimental narrative with an export-ready block.
+6. **Link a DLT token** – Use *Tokenization (DLT)* to associate a QIEDEX token address + liquidity link with the demo DID (`did:eternavault:...`).
 
-- Smart contract: `registerValidator(address)` on `LegacyVault` marks an address as a validator and emits a `ValidatorRegistered` event.
-- Backend endpoints: `GET /api/validators` (lists validators, reads events when a `VAULT_ADDRESS` is configured) and `POST /api/validators` (calls `registerValidator` using the backend signer and `VAULT_ADDRESS`).
-- Frontend: `/validator` dashboard where a connected wallet address can register itself as a validator and view active validators.
+---
 
-See https://docs.qie.digital/how-to-become-a-validator-on-qie-v3 for QIE validator docs and operational details. In production, validators would be part of a permissioned process with staking and governance; this demo is intentionally simplified for the hackathon.
+## API Surface
 
-## Decentralized Storage & On-Chain Anchoring
+| Method & Path | Purpose |
+|---------------|---------|
+| `POST /api/upload` | Accepts an encrypted file + metadata and stores it locally/IPFS |
+| `GET /api/files?did=` | Lists files for a DID |
+| `GET /api/file/:id?as=encrypted` | Streams the encrypted blob for browser decryption |
+| `POST /api/register-did` | Generates a demo DID for front-end testing |
+| `POST /api/notify-death` | Marks a DID as deceased and tries `markDeceased()` on-chain |
+| `GET /api/death-status` | Returns local + on-chain death status for a DID |
+| `GET /api/simulate-unlock?heir=` | Calls `canAccess()` for a wallet and filters downloadable files |
+| `POST /api/register-heir` | Wraps `registerHeirs([address])` so UI can enroll heirs |
+| `POST /api/generate-story` | Summarizes metadata and calls Gemini `generateContent` to build a narrative |
+| `GET/POST /api/validators` | List/register validators using the `LegacyVault` contract |
+| `GET/POST /api/profile/*` | Tokenization + profile helpers (lowdb persistence) |
 
-- Files are encrypted client-side using AES-GCM in the browser before being uploaded.
-- Encrypted blobs are optionally uploaded to IPFS via Web3.Storage, which returns a CID (Content Identifier).
-- The frontend includes the CID when creating the backend record; the backend stores the CID in its lowdb file entry.
-- Users can optionally "Anchor on QIE" which stores a mapping (fileId → CID) on the `LegacyVault` smart contract.
+Routers live in `backend/src/routes/*.js`, while the rest of the endpoints reside directly in `backend/src/index.js`.
 
-Environment variables
-- `WEB3_STORAGE_KEY` — API token for Web3.Storage used by backend (optional)
-- `VITE_WEB3_STORAGE_KEY` — API token injected into the frontend for direct uploads to Web3.Storage (optional)
+---
 
-Quick checklist
+## Smart Contract Overview
 
-- [ ] Sign up for web3.storage and get an API token
-- [ ] Fill `WEB3_STORAGE_KEY` and `VITE_WEB3_STORAGE_KEY` in `.env` files
-- [ ] `npm install` in `/frontend` and `/backend`
-- [ ] `npm run dev`
-- [ ] Upload a file, see CID in the upload success message, click "Anchor on QIE" (when testnet/mainnet is ready)
+`contracts/LegacyVault.sol` exposes the following key functions (ABI mirrored in `backend/src/abi/LegacyVault.json`):
 
-## Tokenization – QIEDEX Integration
+- `registerHeirs(address[] _heirs)` – whitelist heirs
+- `registerValidator(address validator)` – emit validator registration event
+- `markDeceased()` – flag owner as deceased so heirs can unlock
+- `setFileCid(bytes32 fileId, string cid)` – anchor encrypted asset references
+- `setUnlockTimestamp(uint256 ts)` – optional time-lock controls
+- `canAccess(address user)` – read-only unlock check used by the backend
 
-- **What is DLT?** Digital Legacy Tokens (DLT) are on-chain tokens created with QIEDEX Token Creator which can be associated with a user's vault profile. In this prototype a DLT can represent inheritance tiers, access rights, or membership that a vault owner wishes to link to their preserved assets.
+Compile via `npx hardhat compile` and deploy to QIE Testnet to obtain the `VAULT_ADDRESS` consumed by the backend helper.
 
-- **How it works in this demo:** Token minting and token metadata are created outside of EternaVault using the QIEDEX Token Creator. The user can paste their token's address into the Tokenization page in the app to link that token to their DID/profile.
+---
 
-- **Where to add the token:** Navigate to the `Tokenization (DLT)` page in the app and paste the token address (and an optional market/liquidity link). This will persist the token address to the local `lowdb` backend for demonstration purposes.
+## Demo Script for Judges
 
-### Demo Flow for Judges
+1. **Login / DID** – Hit *Register DID* or reuse `demo-owner`.
+2. **Encrypt & upload** – Show client-side encryption toast, note that the backend only stores ciphertext + metadata.
+3. **Anchor on QIE** – Click *Anchor* in Timeline, show transaction hash and explorer link.
+4. **Validator action** – Register a validator and highlight emitted `ValidatorRegistered` event.
+5. **Heirs** – Mark legacy as activated, register a heir, run unlock simulation, download + decrypt the file, and show anchor tx link.
+6. **AI Story** – Generate the Gemini narrative and mention potential PDF export.
+7. **Tokenization** – Paste a token address on the Tokenization page to demonstrate tying DLTs to identities.
 
-1. Upload an encrypted memory via the Upload page.
-2. A CID is generated (client-side upload to Web3.Storage) and recorded in the backend entry.
-3. Anchor the CID on QIE using the "Anchor on QIE" button in the Timeline (requires RPC/contract configured).
-4. Use the Validator UI to simulate validator actions and registration where applicable.
-5. Open the `Tokenization (DLT)` page and paste a QIEDEX token address to associate with the demo DID (`demo-owner`).
+This path touches encryption, anchoring, contract writes, validator bonus criteria, heir UX, and AI storytelling.
 
-### Judging Criteria Mapping
+---
 
-- **Security & Privacy:** Files are encrypted client-side before upload; server stores encrypted blobs and optional CID only.
-- **On-Chain Anchoring:** Anchoring stores a mapping (fileId → CID) on the `LegacyVault` contract; judges can verify anchor transactions when the testnet RPC and contract are configured.
-- **Extensibility / UX:** The Tokenization page demonstrates how tokens can be linked to a user's profile for future access-control or inheritance semantics.
+## Troubleshooting (Quick)
 
-### Notes & Future Work
+- Recompile ABI (`npx hardhat compile`) if the contract changes.
+- Gemini errors? Double-check `GEMINI_API_KEY` and API enablement.
+- Ports busy? Stop stray `node`/`npm` processes and rerun `npm run dev`.
 
-- The current Tokenization page stores token metadata in `lowdb` for demonstration. A future iteration would verify token existence and metadata on-chain via QIEDEX APIs and optionally map token-gated access to vault contents. TODO comments have been added in the backend route as integration points.
+---
+
+## Directory Layout
+
+```
+EternaVault/
+├── frontend/                 # Vite + React app (Upload, Timeline, Validators, Heir Dashboard, Tokenization)
+│   ├── src/pages/            # Page-level views incl. AI story button (`HeirDashboard.jsx`)
+│   ├── src/utils/crypto.js   # AES-GCM encrypt/decrypt helpers
+│   └── vite.config.js        # Vite + Tailwind pipeline
+├── backend/                  # Express API + lowdb persistence
+│   ├── src/index.js          # Primary server, QIE contract helper, AI story route
+│   ├── src/abi/LegacyVault.json
+│   ├── src/routes/           # Modular routers (files, validators, profile)
+│   └── storage/              # Encrypted blobs (.enc)
+├── contracts/                # Hardhat workspace + LegacyVault.sol
+│   ├── contracts/LegacyVault.sol
+│   ├── hardhat.config.js
+│   └── artifacts/…
+├── scripts/                  # Cross-platform setup helpers
+├── package.json              # Workspace scripts (dev/build/test)
+└── README.md                 # This guide
+```
+
+---
+
+## Data Flow
+
+1. **Encrypt & upload** – Browser derives AES key from passphrase → encrypts file → posts ciphertext + metadata to `/api/upload`.
+2. **Persist** – Backend stores metadata in lowdb (`db.json`) and the encrypted blob on disk; optionally pushes to Web3.Storage to obtain a CID.
+3. **Anchor** – When requested, backend signs a `setFileCid(fileId, cid)` transaction on `LegacyVault`, exposing immutable provenance.
+4. **Death/validator signals** – `/api/notify-death` attempts `markDeceased`; `/api/register-heir` wraps `registerHeirs([addr])`; `/api/validators` manages validator registry.
+5. **Unlock** – `GET /api/simulate-unlock?heir=…` calls `canAccess` and returns file metadata if contract returns true.
+6. **Decrypt** – Heirs fetch encrypted blobs, decrypt locally with the original passphrase, and optionally request an AI-generated story summarizing the collection.
+
+```
+[Browser] --AES-GCM--> cipherblob ----> [Backend] ----optional----> [Web3.Storage/IPFS]
+	|                                         |
+	|----> anchors CIDs / death events ------> |--ethers--> [QIE LegacyVault]
+	|<--- canAccess + files ------------------|
+```
+
+---
+
+## Security & Privacy
+
+- **Zero-knowledge uploads:** The backend never receives plaintext—only encrypted bytes + metadata necessary for indexing.
+- **Signer isolation:** `PRIVATE_KEY` lives in backend `.env`; never expose in frontend or version control.
+- **API guardrails:** Routes validate inputs (e.g., `register-heir` expects `heir`), and errors surface without crashing the process.
+- **Audit checklist:** Key modules feature TODO comments for adding rate-limits, per-user auth, rotating storage secrets, and contract audits.
+- **Compliance reminder:** Digital inheritance is jurisdiction-sensitive. Treat this as inspiration, not legal tooling.
+
+---
+
+## Roadmap & Ideas
+
+1. **Multi-validator quorum governance** – only unlock after N-of-M validator attestations.
+2. **Token-gated unlock logic** – require DLT ownership or staking before `canAccess` returns true.
+3. **PDF export + mobile heir app** – portable keepsakes and emergency access UX.
+- Add automated tests (contracts, backend, UI) once core flows stabilize.
+
+---
+
+## FAQ (Short)
+
+- **Does the backend ever see plaintext?** No—encryption is fully client-side.
+- **Does AI read stored files?** No—it only uses filenames, timestamps, and metadata.
+- **Can heirs be multiple?** Yes—the contract supports arrays via `registerHeirs`.
+
+---
+
+## Credits & License
+
+- Built by **Faleesha Zaeen** for the **QIE Blockchain Hackathon 2025**.  
+- Tech inspirations: QIE validator docs, Web3.Storage, Google Gemini.  
+- License: currently unlicensed (all rights reserved). Contact the author before reusing code.
+
+If you ship improvements, open an issue or PR so this digital vault keeps getting better ❤️.
+
+
+
 
