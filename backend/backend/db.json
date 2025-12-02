@@ -1,260 +1,196 @@
 {
   "files": [
     {
-      "id": "AM3mgl7x7StMhEuEiBQu8",
+      "id": "kulUcnXtPt2OfdZsEGJKQ",
       "ownerDid": "demo-owner",
-      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\AM3mgl7x7StMhEuEiBQu8.enc",
+      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\kulUcnXtPt2OfdZsEGJKQ.enc",
       "meta": {
         "ownerDid": "demo-owner",
-        "originalName": ".gitignore",
-        "timestamp": "2025-11-25T13:25:39.712Z",
+        "originalName": "Baby Girl Walks For First Time Thanks To French… (4).jpg",
+        "timestamp": "2025-12-02T20:27:23.526Z",
         "cryptoMeta": {
           "iv": [
-            41,
-            56,
-            7,
-            195,
-            223,
-            12,
-            169,
-            230,
-            18,
-            152,
-            251,
-            1
-          ],
-          "salt": [
-            250,
-            69,
-            209,
-            149,
-            144,
-            145,
-            109,
-            227,
-            190,
-            199,
-            32,
-            216,
-            112,
-            198,
-            41,
-            207
-          ],
-          "originalName": ".gitignore",
-          "type": "text/plain"
-        }
-      },
-      "timestamp": "2025-11-25T13:25:39.743Z"
-    },
-    {
-      "id": "Aiv9hwsiEsSfkdbz7W9Ux",
-      "ownerDid": "demo-owner",
-      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\Aiv9hwsiEsSfkdbz7W9Ux.enc",
-      "meta": {
-        "ownerDid": "demo-owner",
-        "originalName": "Gemini_Generated_Image_pz9cw4pz9cw4pz9c.png",
-        "timestamp": "2025-11-30T16:27:29.751Z",
-        "cryptoMeta": {
-          "iv": [
-            158,
-            45,
-            152,
-            180,
-            12,
-            137,
-            63,
-            116,
-            185,
-            199,
-            126,
-            3
-          ],
-          "salt": [
-            30,
-            94,
-            203,
-            38,
-            226,
-            242,
-            187,
-            66,
-            183,
-            126,
-            85,
-            185,
-            216,
-            162,
-            45,
-            121
-          ],
-          "originalName": "Gemini_Generated_Image_pz9cw4pz9cw4pz9c.png",
-          "type": "image/png"
-        }
-      },
-      "cid": null,
-      "anchored": false,
-      "timestamp": "2025-11-30T16:27:29.852Z"
-    },
-    {
-      "id": "54cVi76eQZoUH9Bfk-unX",
-      "ownerDid": "demo-owner",
-      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\54cVi76eQZoUH9Bfk-unX.enc",
-      "meta": {
-        "ownerDid": "demo-owner",
-        "originalName": "neoslot11.jpeg",
-        "timestamp": "2025-11-30T16:41:09.523Z",
-        "cryptoMeta": {
-          "iv": [
-            253,
-            82,
-            192,
-            220,
-            218,
+            189,
+            88,
             163,
-            95,
-            51,
-            61,
-            143,
-            171,
-            46
-          ],
-          "salt": [
-            101,
-            160,
-            29,
-            232,
-            69,
-            170,
-            89,
-            124,
-            57,
-            44,
-            25,
-            224,
-            210,
-            28,
-            81,
-            124
-          ],
-          "originalName": "neoslot11.jpeg",
-          "type": "image/jpeg"
-        }
-      },
-      "cid": null,
-      "anchored": false,
-      "timestamp": "2025-11-30T16:41:09.610Z"
-    },
-    {
-      "id": "cyNQtUEWf97I9fBXU6hGB",
-      "ownerDid": "demo-owner",
-      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\cyNQtUEWf97I9fBXU6hGB.enc",
-      "meta": {
-        "ownerDid": "demo-owner",
-        "originalName": "Screenshot (34).png",
-        "timestamp": "2025-11-30T17:21:36.465Z",
-        "cryptoMeta": {
-          "iv": [
-            140,
-            185,
-            185,
-            33,
-            247,
-            198,
-            144,
-            27,
-            17,
-            28,
-            158,
-            151
-          ],
-          "salt": [
-            139,
-            80,
-            46,
-            57,
-            159,
-            64,
-            248,
-            59,
-            42,
-            222,
-            215,
-            183,
-            71,
-            231,
-            185,
-            124
-          ],
-          "originalName": "Screenshot (34).png",
-          "type": "image/png"
-        }
-      },
-      "cid": null,
-      "anchored": false,
-      "timestamp": "2025-11-30T17:21:36.539Z"
-    },
-    {
-      "id": "BK2fzefpfXVcQ-kxbPFEt",
-      "ownerDid": "demo-owner",
-      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\BK2fzefpfXVcQ-kxbPFEt.enc",
-      "meta": {
-        "ownerDid": "demo-owner",
-        "originalName": "Screenshot (59).png",
-        "timestamp": "2025-11-30T17:27:58.266Z",
-        "cryptoMeta": {
-          "iv": [
-            150,
-            93,
-            186,
-            173,
-            139,
-            252,
-            154,
-            171,
-            225,
-            167,
-            216,
-            178
-          ],
-          "salt": [
+            119,
             220,
-            149,
-            85,
-            101,
-            66,
+            129,
             127,
-            42,
-            124,
-            130,
-            137,
-            17,
-            5,
-            226,
-            111,
-            105,
-            54
+            44,
+            230,
+            168,
+            222,
+            182
           ],
-          "originalName": "Screenshot (59).png",
-          "type": "image/png"
-        }
+          "salt": [
+            91,
+            238,
+            123,
+            211,
+            104,
+            151,
+            62,
+            110,
+            180,
+            218,
+            33,
+            196,
+            121,
+            205,
+            251,
+            239
+          ],
+          "originalName": "Baby Girl Walks For First Time Thanks To French… (4).jpg",
+          "type": "image/jpeg"
+        },
+        "title": "Baby's First Walk",
+        "description": "Captured Baby's first walk on a sunday morning ",
+        "encryptionMode": "single-key"
+      },
+      "title": "Baby's First Walk",
+      "description": "Captured Baby's first walk on a sunday morning ",
+      "originalName": "Baby Girl Walks For First Time Thanks To French… (4).jpg",
+      "cryptoMeta": {
+        "iv": [
+          189,
+          88,
+          163,
+          119,
+          220,
+          129,
+          127,
+          44,
+          230,
+          168,
+          222,
+          182
+        ],
+        "salt": [
+          91,
+          238,
+          123,
+          211,
+          104,
+          151,
+          62,
+          110,
+          180,
+          218,
+          33,
+          196,
+          121,
+          205,
+          251,
+          239
+        ],
+        "originalName": "Baby Girl Walks For First Time Thanks To French… (4).jpg",
+        "type": "image/jpeg"
       },
       "cid": null,
       "anchored": false,
-      "timestamp": "2025-11-30T17:27:58.325Z"
+      "timestamp": "2025-12-02T20:27:23.590Z"
+    },
+    {
+      "id": "FPGcSTaeciy_DVtNn8wp2",
+      "ownerDid": "demo-owner",
+      "storedPath": "C:\\Users\\Faleesha Zaeen\\Desktop\\EternaVault-QIE\\backend\\backend\\storage\\FPGcSTaeciy_DVtNn8wp2.enc",
+      "meta": {
+        "ownerDid": "demo-owner",
+        "originalName": "family road trip.jpg",
+        "timestamp": "2025-12-02T20:31:44.972Z",
+        "cryptoMeta": {
+          "iv": [
+            95,
+            49,
+            74,
+            53,
+            248,
+            164,
+            72,
+            52,
+            163,
+            93,
+            53,
+            137
+          ],
+          "salt": [
+            163,
+            36,
+            75,
+            213,
+            94,
+            50,
+            39,
+            165,
+            200,
+            165,
+            134,
+            172,
+            19,
+            35,
+            5,
+            202
+          ],
+          "originalName": "family road trip.jpg",
+          "type": "image/jpeg"
+        },
+        "title": "Family road trip",
+        "description": "We went on a family road trip together. The weather was nice, and the drive felt peaceful. We had snacks, played songs, and laughed at random conversations. Everyone was relaxed and enjoying the time together.",
+        "encryptionMode": "single-key"
+      },
+      "title": "Family road trip",
+      "description": "We went on a family road trip together. The weather was nice, and the drive felt peaceful. We had snacks, played songs, and laughed at random conversations. Everyone was relaxed and enjoying the time together.",
+      "originalName": "family road trip.jpg",
+      "cryptoMeta": {
+        "iv": [
+          95,
+          49,
+          74,
+          53,
+          248,
+          164,
+          72,
+          52,
+          163,
+          93,
+          53,
+          137
+        ],
+        "salt": [
+          163,
+          36,
+          75,
+          213,
+          94,
+          50,
+          39,
+          165,
+          200,
+          165,
+          134,
+          172,
+          19,
+          35,
+          5,
+          202
+        ],
+        "originalName": "family road trip.jpg",
+        "type": "image/jpeg"
+      },
+      "cid": null,
+      "anchored": false,
+      "timestamp": "2025-12-02T20:31:44.991Z"
     }
   ],
   "dids": [],
   "statuses": {
     "demo-owner": {
       "deceased": true,
-      "markedAt": "2025-12-01T11:11:57.269Z"
+      "markedAt": "2025-12-02T20:27:42.218Z",
+      "txHash": "0x6e8ae2b86265f965c6c84143e5118702379fa6e4b8d89eec24122a1be5dd4345",
+      "chain": "qie-testnet"
     }
   },
-  "profile": {
-    "demo-owner": {
-      "tokenAddress": " 0x1234567845389",
-      "marketLink": "https://test.com"
-    }
-  }
+  "profile": {}
 }

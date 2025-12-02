@@ -90,6 +90,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     }
 
     const meta = JSON.parse(metaStr);
+    const title = meta.title || '';
+    const description = meta.description || '';
     const id = nanoid();
     const filename = `${id}.enc`;
     const storedPath = join(storageDir, filename);
@@ -101,6 +103,10 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       ownerDid,
       storedPath,
       meta,
+      title,
+      description,
+      originalName: meta.originalName,
+      cryptoMeta: meta.cryptoMeta,
       cid: cid || null,
       anchored: false,
       timestamp: new Date().toISOString(),
@@ -229,50 +235,77 @@ app.post('/api/register-heir', async (req, res) => {
 
 app.post('/api/generate-story', async (req, res) => {
   try {
-    const { did } = req.body || {};
-    if (!did) return res.status(400).json({ ok: false, error: 'Missing DID' });
+    const { did, memory } = req.body || {};
+    if (!did) return res.status(400).json({ ok: false, success: false, error: 'Missing DID' });
 
     await db.read();
     const files = db.data.files.filter((f) => f.ownerDid === did);
+
     if (!files.length) {
-      return res.json({ ok: false, message: 'No files available to summarize.' });
+      return res.json({ ok: false, success: false, message: 'No files available to summarize.' });
     }
 
-    const summaryData = files.map((file) => ({
-      filename: file.meta?.originalName,
-      timestamp: file.timestamp,
-      type: file.meta?.originalName?.split('.').pop() || 'unknown',
-    }));
-
-    const GEMINI_KEY = process.env.GEMINI_API_KEY;
-    if (!GEMINI_KEY) {
-      return res.status(500).json({ ok: false, error: 'Missing GEMINI_API_KEY' });
+    const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;
+    if (!OPENROUTER_KEY) {
+      return res.status(500).json({ ok: false, success: false, message: 'AI story unavailable.' });
     }
 
-    const aiPrompt = `Create a sentimental, heartwarming memorial-style biography using the following preserved memories. DO NOT mention file extensions.\n\nMemories:\n${JSON.stringify(summaryData, null, 2)}\n\nTone: Emotional, respectful, reflective. Write 2–5 paragraphs.`;
+    const model = process.env.OPENROUTER_MODEL || 'deepseek/deepseek-r1:free';
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: 'user',
-              parts: [{ text: aiPrompt }],
-            },
-          ],
-        }),
+    let aiPrompt;
+    if (memory && memory.id) {
+      const linkedRecord = files.find((file) => file.id === memory.id);
+      const memoryTitle = memory?.title || linkedRecord?.title || linkedRecord?.meta?.originalName || 'Untitled Memory';
+      const memoryDescription = memory?.description || linkedRecord?.description || 'No description provided.';
+      const snippet = memory?.snippet || '';
+      aiPrompt = `You are an empathetic archivist crafting a respectful legacy note. Summarize only the facts provided without inventing new details.\nTitle: ${memoryTitle}\nDescription: ${memoryDescription}\nSnippet: ${snippet || 'N/A'}\nFocus on why this moment matters to loved ones.`;
+    } else {
+      const summaryData = files.map((file) => ({
+        filename: file.meta?.originalName,
+        timestamp: file.timestamp,
+        type: file.meta?.originalName?.split('.').pop() || 'unknown',
+        title: file.title || null,
+        description: file.description || null,
+      }));
+      aiPrompt = `You are an empathetic archivist crafting a respectful multi-memory legacy note. Use only the facts provided below and avoid inventing details.\nMemories:\n${JSON.stringify(summaryData, null, 2)}\nTone: warm, reflective, respectful.`;
+    }
+
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${OPENROUTER_KEY}`,
+        'HTTP-Referer': process.env.OPENROUTER_REFERRER || 'https://github.com/Faleesha-Zaeen/EternaVault',
+        'X-Title': process.env.OPENROUTER_TITLE || 'eternaVault',
       },
-    );
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: 'You craft heartfelt memorial summaries from provided metadata only.' },
+          { role: 'user', content: aiPrompt },
+        ],
+        temperature: 0.6,
+        max_tokens: 600,
+      }),
+    });
 
     const data = await response.json();
-    const story = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated';
-    return res.json({ ok: true, story });
+
+    if (!response.ok) {
+      console.error('OpenRouter error', response.status, data);
+      return res.status(502).json({ ok: false, success: false, message: 'AI story unavailable.' });
+    }
+
+    const story = data.choices?.[0]?.message?.content?.trim();
+    if (!story) {
+      console.warn('OpenRouter returned no text', data);
+      return res.json({ ok: false, success: false, message: 'AI story unavailable.' });
+    }
+
+    return res.json({ ok: true, success: true, story });
   } catch (err) {
     console.error('generate-story failed:', err);
-    return res.status(500).json({ ok: false, error: err.message });
+    return res.status(500).json({ ok: false, success: false, message: 'AI story unavailable.' });
   }
 });
 

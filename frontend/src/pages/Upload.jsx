@@ -4,19 +4,24 @@ import { uploadEncryptedBlob } from '../utils/storage.js';
 
 function Upload() {
   const [file, setFile] = useState(null);
-  const [passphrase, setPassphrase] = useState('');
+  const [vaultKey, setVaultKey] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
   const [uploadError, setUploadError] = useState('');
+  const [showKeyWarning, setShowKeyWarning] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!file || !passphrase) {
-      setStatus('Please choose a file and enter a passphrase.');
+    if (!file || !vaultKey) {
+      setStatus('Please choose a file and enter the vault key.');
+      setShowKeyWarning(!vaultKey);
       return;
     }
+    setShowKeyWarning(false);
     try {
       setStatus('Encrypting file...');
-      const { encryptedBlob, meta } = await encryptFile(file, passphrase);
+      const { encryptedBlob, meta } = await encryptFile(file, vaultKey);
 
       // Upload encrypted blob to Web3.Storage (IPFS) if a token is available
       const WEB3_STORAGE_KEY = import.meta.env.VITE_WEB3_STORAGE_KEY;
@@ -46,6 +51,9 @@ function Upload() {
         originalName: file.name,
         timestamp: new Date().toISOString(),
         cryptoMeta: meta,
+        title,
+        description,
+        encryptionMode: 'single-key',
       }));
       formData.append('ownerDid', 'demo-owner');
       if (cid) formData.append('cid', cid);
@@ -60,6 +68,8 @@ function Upload() {
         setStatus(`Uploaded successfully. Vault entry id: ${data.id}` + (cid ? `\nCID: ${cid}` : ''));
         // clear any previous upload-specific errors on success
         setUploadError('');
+        setTitle('');
+        setDescription('');
       } else {
         setStatus('Upload failed. Check console/logs.');
       }
@@ -83,6 +93,23 @@ function Upload() {
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
+          <label className="block text-sm mb-1">Vault Encryption Key</label>
+          <p className="text-xs text-yellow-300 mb-2">⚠ Do not lose this key — your memories cannot be decrypted without it.</p>
+          <input
+            type="password"
+            value={vaultKey}
+            onChange={(e) => {
+              setVaultKey(e.target.value);
+              if (e.target.value) setShowKeyWarning(false);
+            }}
+            className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
+            placeholder="Enter your vault key"
+          />
+          {showKeyWarning && (
+            <p className="text-xs text-pink-300 mt-1">Enter the vault key before uploading.</p>
+          )}
+        </div>
+        <div>
           <label className="block text-sm mb-1">File</label>
           <input
             type="file"
@@ -91,19 +118,30 @@ function Upload() {
           />
         </div>
         <div>
-          <label className="block text-sm mb-1">Passphrase</label>
+          <label className="block text-sm mb-1">Memory Title (optional)</label>
           <input
-            type="password"
-            value={passphrase}
-            onChange={(e) => setPassphrase(e.target.value)}
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
-            placeholder="Choose something memorable but strong"
+            placeholder="e.g., Wedding toast, First recital"
+          />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Memory Description (optional)</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
+            placeholder="Add context so heirs understand why this matters"
+            rows={3}
           />
         </div>
         <div className="flex items-center gap-3">
           <button
             type="submit"
-            className="px-4 py-2 rounded-md bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400"
+            className="px-4 py-2 rounded-md bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 disabled:opacity-40"
+            disabled={!vaultKey}
           >
             Encrypt & Upload
           </button>
