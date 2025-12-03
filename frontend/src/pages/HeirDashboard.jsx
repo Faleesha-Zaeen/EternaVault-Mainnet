@@ -287,29 +287,29 @@ function HeirDashboard() {
   };
 
   return (
-    <section>
-      <h2 className="text-2xl font-semibold mb-4">Heir Dashboard (demo)</h2>
-      <p className="text-sm text-slate-400 mb-4">
+    <section className="min-h-screen w-full max-w-5xl mx-auto bg-[#0d0e11] text-slate-100 font-['Inter'] px-4 py-10 sm:px-10 space-y-6">
+      <h2 className="text-3xl font-['Playfair_Display'] text-[#C4A87C] mb-1 tracking-[0.08em]">Heir Dashboard (demo)</h2>
+      <p className="text-sm text-[#8A8F99] mb-2 max-w-3xl leading-relaxed">
         This view pretends you are an approved heir. In this phase, we now call the
         QIE LegacyVault contract to decide unlock rights and to record when a legacy is activated.
       </p>
 
-      <div className="mb-6 max-w-sm">
-        <label className="block text-sm mb-1">Vault Encryption Key</label>
+      <div className="mb-8 max-w-md bg-[#111317] border border-white/5 rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_18px_#C4A87C55]">
+        <label className="block text-sm uppercase tracking-wide text-[#C4A87C] mb-2">Vault Encryption Key</label>
         <input
           type="password"
           value={masterPassphrase}
           onChange={(e) => setMasterPassphrase(e.target.value)}
-          className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
+          className="w-full rounded-md bg-[#0d0e11] border border-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-[#6c707a] focus:outline-none focus:border-[#6aa4ff]"
           placeholder="Enter the key shared by the owner"
         />
-        <p className="text-xs text-slate-400 mt-1">This single key unlocks every encrypted memory.</p>
+        <p className="text-xs text-[#8A8F99] mt-2">This single key unlocks every encrypted memory.</p>
       </div>
 
-      <div className="bg-slate-900/60 border border-slate-800 rounded-md p-4 mb-6">
-        <p className="text-sm font-semibold mb-2">Legacy Status</p>
+      <div className="bg-[#111317] border border-white/5 rounded-2xl p-6 mb-8 shadow-[0_4px_20px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_18px_#C4A87C55]">
+        <p className="text-sm font-semibold tracking-wide text-[#C4A87C] mb-3">Legacy Status</p>
         {!deathStatus ? (
-          <p className="text-xs text-slate-400">Fetching status from backend…</p>
+          <p className="text-xs text-[#8A8F99]">Fetching status from backend…</p>
         ) : deathStatus.deceased ? (
           <div>
             <p className="text-sm text-emerald-300">Status: Legacy activated on QIE ✅</p>
@@ -318,17 +318,17 @@ function HeirDashboard() {
                 href={`https://testnet.qie.digital/tx/${deathStatus.txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-emerald-400 underline text-xs"
+                className="text-emerald-300 underline text-xs"
               >
                 View on Explorer
               </a>
             )}
           </div>
         ) : (
-          <p className="text-sm text-yellow-300">Status: Owner still alive — access locked 🔒</p>
+          <p className="text-sm text-yellow-200">Status: Owner still alive — access locked 🔒</p>
         )}
         <button
-          className="mt-3 px-4 py-2 rounded-md bg-pink-600 text-sm"
+          className="mt-4 px-4 py-2 rounded-md text-sm font-semibold bg-[#6aa4ff] text-[#0d0e11] shadow-lg shadow-[#6aa4ff26] hover:bg-[#82b4ff] transition-all duration-300 hover:-translate-y-1"
           onClick={markLegacyActivated}
           disabled={activating}
         >
@@ -336,8 +336,8 @@ function HeirDashboard() {
         </button>
       </div>
 
-      <div className="mb-4 max-w-sm">
-        <label className="block text-sm mb-1">Heir Wallet Address</label>
+      <div className="mb-8 max-w-md bg-[#111317] border border-white/5 rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_18px_#C4A87C55]">
+        <label className="block text-sm uppercase tracking-wide text-[#C4A87C] mb-2">Heir Wallet Address</label>
         <input
           type="text"
           value={heirAddress}
@@ -346,12 +346,12 @@ function HeirDashboard() {
             setHeirRegistered(false);
             setFlowNote('');
           }}
-          className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
+          className="w-full rounded-md bg-[#0d0e11] border border-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-[#6c707a] focus:outline-none focus:border-[#6aa4ff]"
           placeholder="0x..."
         />
         <button
           type="button"
-          className="mt-3 px-4 py-2 rounded-md bg-blue-500 text-sm"
+          className="mt-4 px-4 py-2 rounded-md bg-[#6aa4ff] text-[#0d0e11] text-sm font-semibold shadow-lg shadow-[#6aa4ff26] hover:bg-[#82b4ff] transition-all duration-300 hover:-translate-y-1"
           onClick={registerHeir}
         >
           Register Heir On Chain
@@ -360,36 +360,36 @@ function HeirDashboard() {
           <button
             type="button"
             onClick={checkUnlockStatus}
-            className="mt-3 px-4 py-2 rounded-md bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400"
+            className="mt-3 px-4 py-2 rounded-md bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:-translate-y-1"
             disabled={checkingAccess}
           >
             {checkingAccess ? 'Checking…' : 'Check Unlock Status'}
           </button>
         )}
-        {flowNote && <p className="mt-2 text-xs text-slate-400">{flowNote}</p>}
+        {flowNote && <p className="mt-2 text-xs text-[#8A8F99]">{flowNote}</p>}
       </div>
       {unlockResult ? (
         unlockResult.allowed ? (
           entries.length > 0 ? (
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {entries.map((e) => {
                 const title = getEntryTitle(e);
                 const description = getEntryDescription(e);
                 return (
                   <li
                     key={e.id}
-                    className="border border-slate-800 rounded-lg p-3 bg-slate-900/60 flex items-center justify-between gap-3"
+                    className="border border-white/5 rounded-xl p-4 bg-[#111317] flex items-center justify-between gap-3 shadow-[0_10px_35px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_18px_#6aa4ff44]"
                   >
                     <div className="flex-1">
-                      <p className="text-sm font-semibold">{title}</p>
+                      <p className="text-base font-semibold text-slate-100 font-['Playfair_Display']">{title}</p>
                       {description && (
-                        <p className="text-xs text-slate-400 mt-1">{description}</p>
+                        <p className="text-xs text-[#8A8F99] mt-1">{description}</p>
                       )}
-                      <p className="text-[11px] text-slate-500 mt-1">ID: {e.id}</p>
+                      <p className="text-[11px] text-[#6c707a] mt-1">ID: {e.id}</p>
                     </div>
                     <button
                       onClick={() => openMemoryModal(e)}
-                      className="px-3 py-1.5 rounded-md bg-emerald-500 text-slate-950 text-xs font-semibold hover:bg-emerald-400"
+                      className="px-4 py-2 rounded-md bg-emerald-500 text-slate-950 text-xs font-semibold hover:bg-emerald-400 shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:-translate-y-1"
                     >
                       View Memory
                     </button>
@@ -398,26 +398,26 @@ function HeirDashboard() {
               })}
             </ul>
           ) : (
-            <p className="text-sm text-slate-400">No files available yet.</p>
+            <p className="text-sm text-[#8A8F99]">No files available yet.</p>
           )
         ) : (
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-[#8A8F99]">
             Heir cannot access files until legacy is activated on-chain.
           </p>
         )
       ) : (
-        <p className="text-sm text-slate-400">Check unlock status to see available files.</p>
+        <p className="text-sm text-[#8A8F99]">Check unlock status to see available files.</p>
       )}
       {modalOpen && selectedEntry && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 z-50">
-          <div className="bg-slate-950 border border-slate-800 rounded-lg w-full max-w-lg p-6">
-            <h3 className="text-xl font-semibold mb-1">{getEntryTitle(selectedEntry)}</h3>
+          <div className="bg-[#0d0e11] border border-white/5 rounded-2xl w-full max-w-lg p-6 shadow-[0_25px_80px_rgba(0,0,0,0.65)]">
+            <h3 className="text-2xl font-['Playfair_Display'] text-[#C4A87C] mb-2">{getEntryTitle(selectedEntry)}</h3>
             {getEntryDescription(selectedEntry) && (
-              <p className="text-sm text-slate-300 mb-4">{getEntryDescription(selectedEntry)}</p>
+              <p className="text-sm text-[#8A8F99] mb-4">{getEntryDescription(selectedEntry)}</p>
             )}
             {!decryptedEntries[selectedEntry.id] ? (
-              <div className="p-3 border border-slate-800 rounded-md bg-slate-900/40">
-                <p className="text-sm text-slate-300">
+              <div className="p-4 border border-white/5 rounded-xl bg-[#111317]">
+                <p className="text-sm text-slate-200">
                   {modalNote || (masterPassphrase ? 'Unlocking memory…' : 'Enter the vault key to access memories.')}
                 </p>
               </div>
@@ -425,13 +425,13 @@ function HeirDashboard() {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => decryptMemory(selectedEntry, masterPassphrase)}
-                  className="px-4 py-2 rounded-md bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400"
+                  className="px-4 py-2 rounded-md bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:-translate-y-1"
                 >
                   Download & Decrypt
                 </button>
                 <button
                   onClick={() => generateMemorySummary(selectedEntry)}
-                  className="px-4 py-2 rounded-md bg-purple-500 text-sm font-semibold hover:bg-purple-400 disabled:opacity-40"
+                  className="px-4 py-2 rounded-md bg-[#6a5b99] text-sm font-semibold hover:bg-[#8170b3] disabled:opacity-40 transition-all duration-300 hover:-translate-y-1"
                   disabled={!decryptedEntries[selectedEntry.id] || summaryLoading}
                 >
                   {summaryLoading ? 'Summoning AI…' : '🧠 Generate AI Legacy Story'}
@@ -439,23 +439,23 @@ function HeirDashboard() {
               </div>
             )}
             {memorySummary && (
-              <div className="mt-4 p-3 border border-purple-300 rounded-md bg-purple-900/30">
+              <div className="mt-5 p-4 border border-white/5 rounded-xl bg-[#111317] text-slate-200">
                 <p className="whitespace-pre-line text-sm">{memorySummary}</p>
               </div>
             )}
             {modalNote && decryptedEntries[selectedEntry.id] && (
-              <p className="mt-3 text-xs text-slate-400 whitespace-pre-line">{modalNote}</p>
+              <p className="mt-3 text-xs text-[#8A8F99] whitespace-pre-line">{modalNote}</p>
             )}
             <button
               onClick={closeMemoryModal}
-              className="mt-6 px-4 py-2 rounded-md bg-slate-800 text-sm"
+              className="mt-6 px-4 py-2 rounded-md bg-[#111317] border border-white/5 text-sm text-slate-200 hover:border-[#6aa4ff] transition-all duration-300 hover:-translate-y-1"
             >
               Back to Memories
             </button>
           </div>
         </div>
       )}
-      {message && <p className="mt-4 text-xs text-slate-300">{message}</p>}
+      {message && <p className="mt-6 text-xs text-[#8A8F99] whitespace-pre-line">{message}</p>}
     </section>
   );
 }

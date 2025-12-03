@@ -10,19 +10,19 @@ import TokenizationInfo from './pages/TokenizationInfo.jsx';
 function App() {
   console.log("WEB3 KEY:", import.meta.env.VITE_WEB3_STORAGE_KEY);
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b border-slate-800 bg-slate-900/70 backdrop-blur">
+    <div className="min-h-screen flex flex-col bg-[#0d0e11] text-slate-100 font-['Inter']">
+      <header className="border-b border-white/5 bg-[#0d0e11]/90 backdrop-blur">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="font-semibold text-lg tracking-tight">
+          <Link to="/" className="font-['Playfair_Display'] text-xl text-[#C4A87C] tracking-[0.08em]">
             EternaVault
           </Link>
-          <nav className="flex gap-4 text-sm">
-            <Link to="/" className="hover:text-emerald-300">Home</Link>
-            <Link to="/upload" className="hover:text-emerald-300">Upload</Link>
-            <Link to="/timeline" className="hover:text-emerald-300">Timeline</Link>
-            <Link to="/heir" className="hover:text-emerald-300">Heir</Link>
-            <Link to="/validator" className="hover:text-emerald-300">Validator</Link>
-            <Link to="/tokenization" className="hover:text-emerald-300">Tokenization (DLT)</Link>
+          <nav className="flex gap-4 text-sm text-[#8A8F99]">
+            <Link to="/" className="transition hover:text-[#6aa4ff]">Home</Link>
+            <Link to="/upload" className="transition hover:text-[#6aa4ff]">Upload</Link>
+            <Link to="/timeline" className="transition hover:text-[#6aa4ff]">Timeline</Link>
+            <Link to="/heir" className="transition hover:text-[#6aa4ff]">Heir</Link>
+            <Link to="/validator" className="transition hover:text-[#6aa4ff]">Validator</Link>
+            <Link to="/tokenization" className="transition hover:text-[#6aa4ff]">Tokenization (DLT)</Link>
           </nav>
         </div>
       </header>
@@ -36,7 +36,7 @@ function App() {
             <Route path="/tokenization" element={<TokenizationInfo />} />
         </Routes>
       </main>
-      <footer className="border-t border-slate-800 text-xs text-slate-400 py-4 text-center">
+      <footer className="border-t border-white/5 text-xs text-[#8A8F99] py-4 text-center">
         Prototype for QIE Hackathon – Not legal advice or production-ready.
       </footer>
     </div>

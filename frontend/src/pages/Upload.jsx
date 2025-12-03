@@ -85,16 +85,16 @@ function Upload() {
   };
 
   return (
-    <section className="max-w-xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Upload an encrypted memory</h2>
-      <p className="text-sm text-slate-400 mb-4">
+    <section className="min-h-screen max-w-2xl mx-auto bg-[#0d0e11] text-slate-100 font-['Inter'] px-4 py-10">
+      <h2 className="text-3xl font-['Playfair_Display'] text-[#C4A87C] mb-3">Upload an encrypted memory</h2>
+      <p className="text-sm text-slate-400 mb-6 leading-relaxed">
         Files are encrypted locally in your browser using AES-GCM before being
         sent to the backend. The server never sees your plaintext.
       </p>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-[#111317] border border-white/5 rounded-2xl p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
         <div>
-          <label className="block text-sm mb-1">Vault Encryption Key</label>
-          <p className="text-xs text-yellow-300 mb-2">⚠ Do not lose this key — your memories cannot be decrypted without it.</p>
+          <label className="block text-sm uppercase tracking-wide text-[#C4A87C] mb-2">Vault Encryption Key</label>
+          <p className="text-xs text-yellow-200 mb-3">⚠ Do not lose this key — your memories cannot be decrypted without it.</p>
           <input
             type="password"
             value={vaultKey}
@@ -102,37 +102,37 @@ function Upload() {
               setVaultKey(e.target.value);
               if (e.target.value) setShowKeyWarning(false);
             }}
-            className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
+            className="w-full rounded-md bg-[#0d0e11] border border-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-[#6aa4ff]"
             placeholder="Enter your vault key"
           />
           {showKeyWarning && (
-            <p className="text-xs text-pink-300 mt-1">Enter the vault key before uploading.</p>
+            <p className="text-xs text-pink-200 mt-2">Enter the vault key before uploading.</p>
           )}
         </div>
         <div>
-          <label className="block text-sm mb-1">File</label>
+          <label className="block text-sm uppercase tracking-wide text-[#C4A87C] mb-2">File</label>
           <input
             type="file"
             onChange={(e) => setFile(e.target.files[0] || null)}
-            className="block w-full text-sm text-slate-200 file:mr-4 file:py-2 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-emerald-500 file:text-slate-950 hover:file:bg-emerald-400"
+            className="block w-full text-sm text-slate-200 file:mr-4 file:py-2 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#6aa4ff] file:text-[#0d0e11] hover:file:bg-[#82b4ff]"
           />
         </div>
         <div>
-          <label className="block text-sm mb-1">Memory Title (optional)</label>
+          <label className="block text-sm uppercase tracking-wide text-[#C4A87C] mb-2">Memory Title (optional)</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
+            className="w-full rounded-md bg-[#0d0e11] border border-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-[#6aa4ff]"
             placeholder="e.g., Wedding toast, First recital"
           />
         </div>
         <div>
-          <label className="block text-sm mb-1">Memory Description (optional)</label>
+          <label className="block text-sm uppercase tracking-wide text-[#C4A87C] mb-2">Memory Description (optional)</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:border-emerald-400"
+            className="w-full rounded-md bg-[#0d0e11] border border-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-[#6aa4ff]"
             placeholder="Add context so heirs understand why this matters"
             rows={3}
           />
@@ -140,17 +140,17 @@ function Upload() {
         <div className="flex items-center gap-3">
           <button
             type="submit"
-            className="px-4 py-2 rounded-md bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 disabled:opacity-40"
+            className="px-5 py-2.5 rounded-md bg-emerald-500 text-[#0d0e11] font-semibold text-sm shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 disabled:opacity-40"
             disabled={!vaultKey}
           >
             Encrypt & Upload
           </button>
         </div>
         {uploadError && (
-          <p className="text-yellow-400 text-sm mt-2 whitespace-pre-wrap">{uploadError}</p>
+          <p className="text-yellow-200 text-sm mt-2 whitespace-pre-wrap">{uploadError}</p>
         )}
       </form>
-      {status && <p className="mt-4 text-sm text-slate-300">{status}</p>}
+      {status && <p className="mt-4 text-sm text-slate-400 whitespace-pre-line">{status}</p>}
     </section>
   );
 }

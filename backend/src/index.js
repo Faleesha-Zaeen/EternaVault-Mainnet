@@ -296,7 +296,22 @@ app.post('/api/generate-story', async (req, res) => {
       return res.status(502).json({ ok: false, success: false, message: 'AI story unavailable.' });
     }
 
-    const story = data.choices?.[0]?.message?.content?.trim();
+    const rawMessage = data.choices?.[0]?.message;
+    let story = '';
+
+    if (rawMessage) {
+      if (typeof rawMessage === 'string') {
+        story = rawMessage.trim();
+      } else if (typeof rawMessage?.content === 'string') {
+        story = rawMessage.content.trim();
+      } else if (Array.isArray(rawMessage?.content)) {
+        story = rawMessage.content
+          .map((chunk) => chunk?.text || chunk?.content || '')
+          .join('\n')
+          .trim();
+      }
+    }
+
     if (!story) {
       console.warn('OpenRouter returned no text', data);
       return res.json({ ok: false, success: false, message: 'AI story unavailable.' });

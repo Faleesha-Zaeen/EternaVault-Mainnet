@@ -57,32 +57,42 @@ function TokenizationInfo() {
   };
 
   return (
-    <section>
-      <h2 className="text-2xl font-semibold mb-4">Digital Legacy Token (DLT)</h2>
-      <p className="text-sm text-slate-300 mb-2">You can associate a QIEDEX-created token with your vault profile. A token can represent inheritance tiers, access rights, or membership.</p>
-      <p className="text-sm text-slate-300 mb-4">For this hackathon, token creation happens outside this app via the QIEDEX Token Creator UI.</p>
+    <section className="min-h-screen w-full max-w-4xl mx-auto bg-[#0d0e11] text-slate-100 font-['Inter'] px-4 py-10 sm:px-10 space-y-6">
+      <div>
+        <h2 className="text-3xl font-['Playfair_Display'] text-[#C4A87C] tracking-[0.08em]">Digital Legacy Token (DLT)</h2>
+        <p className="text-sm text-[#8A8F99] mt-3">
+          You can associate a QIEDEX-created token with your vault profile. A token can represent inheritance tiers, access rights, or membership.
+        </p>
+        <p className="text-sm text-[#8A8F99]">
+          For this hackathon, token creation happens outside this app via the QIEDEX Token Creator UI.
+        </p>
+      </div>
 
-      <div className="max-w-lg bg-slate-900/60 border border-slate-800 rounded-md p-4">
-        <label className="block text-sm text-slate-400 mb-1">Your DLT Token Address</label>
-        <input
-          className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm mb-3"
-          value={tokenAddress}
-          onChange={(e) => setTokenAddress(e.target.value)}
-          placeholder="0x... or QIE token address"
-        />
+      <div className="max-w-xl bg-[#111317] border border-white/5 rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.35)] space-y-4">
+        <div>
+          <label className="block text-sm uppercase tracking-wide text-[#C4A87C] mb-2">Your DLT Token Address</label>
+          <input
+            className="w-full bg-[#0d0e11] border border-white/5 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder:text-[#6c707a] focus:outline-none focus:border-[#6aa4ff] transition"
+            value={tokenAddress}
+            onChange={(e) => setTokenAddress(e.target.value)}
+            placeholder="0x... or QIE token address"
+          />
+        </div>
 
-        <label className="block text-sm text-slate-400 mb-1">Liquidity / Market Link (optional)</label>
-        <input
-          className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm mb-3"
-          value={marketLink}
-          onChange={(e) => setMarketLink(e.target.value)}
-          placeholder="https://qiedex.example/market/123"
-        />
+        <div>
+          <label className="block text-sm uppercase tracking-wide text-[#C4A87C] mb-2">Liquidity / Market Link (optional)</label>
+          <input
+            className="w-full bg-[#0d0e11] border border-white/5 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder:text-[#6c707a] focus:outline-none focus:border-[#6aa4ff] transition"
+            value={marketLink}
+            onChange={(e) => setMarketLink(e.target.value)}
+            placeholder="https://qiedex.example/market/123"
+          />
+        </div>
 
-        <div className="flex items-center justify-between">
-          <div className="text-xs text-slate-400">{loading ? 'Loading…' : ''}</div>
+        <div className="flex items-center justify-between gap-4">
+          <div className="text-xs text-[#8A8F99]">{loading ? 'Loading…' : ''}</div>
           <button
-            className="px-4 py-2 bg-emerald-600 rounded text-sm"
+            className="px-4 py-2 rounded-md bg-[#6aa4ff] text-[#0d0e11] text-sm font-semibold shadow-lg shadow-[#6aa4ff26] hover:bg-[#82b4ff] transition-all duration-300 hover:-translate-y-1"
             onClick={save}
             disabled={saving}
           >
@@ -90,7 +100,9 @@ function TokenizationInfo() {
           </button>
         </div>
 
-        <p className="text-xs text-slate-500 mt-3">Token minting is done externally with QIEDEX Token Creator. This screen links a QIE token to the user for future versions.</p>
+        <p className="text-xs text-[#8A8F99]">
+          Token minting is done externally with QIEDEX Token Creator. This screen links a QIE token to the user for future versions.
+        </p>
       </div>
     </section>
   );

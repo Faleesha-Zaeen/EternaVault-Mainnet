@@ -294,14 +294,3 @@ EternaVault/
 
 ---
 
-## Credits & License
-
-- Built by **Faleesha Zaeen** for the **QIE Blockchain Hackathon 2025**.  
-- Tech inspirations: QIE validator docs, Web3.Storage, Google Gemini.  
-- License: currently unlicensed (all rights reserved). Contact the author before reusing code.
-
-If you ship improvements, open an issue or PR so this digital vault keeps getting better ❤️.
-
-
-
-

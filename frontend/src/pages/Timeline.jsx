@@ -65,33 +65,40 @@ function Timeline() {
   const groups = groupByDate(files);
 
   return (
-    <section>
-      <h2 className="text-2xl font-semibold mb-4">Vault Timeline (demo)</h2>
+    <section className="min-h-screen w-full max-w-5xl mx-auto bg-[#0d0e11] text-slate-100 font-['Inter'] px-4 py-10 sm:px-10 space-y-6">
+      <h2 className="text-3xl font-['Playfair_Display'] text-[#C4A87C] tracking-[0.08em]">Vault Timeline (demo)</h2>
       {Object.keys(groups).length === 0 && (
-        <p className="text-sm text-slate-400">No files uploaded yet for this DID.</p>
+        <p className="text-sm text-[#8A8F99]">No files uploaded yet for this DID.</p>
       )}
-      <div className="space-y-4 mt-4">
+      <div className="space-y-4 mt-2">
         {Object.entries(groups).map(([date, group]) => (
           <div
             key={date}
-            className="border border-slate-800 rounded-lg p-4 bg-slate-900/60"
+            className="border border-white/5 rounded-2xl p-5 bg-[#111317] shadow-[0_4px_20px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_18px_#C4A87C33]"
           >
-            <p className="text-sm text-emerald-300 mb-1">{buildSummary(date, group)}</p>
-            <ul className="text-xs text-slate-300 list-disc list-inside">
+            <div className="flex items-baseline justify-between gap-3 mb-3">
+              <p className="text-sm font-semibold text-[#C4A87C] tracking-wide">{date}</p>
+              <span className="text-xs text-[#8A8F99] uppercase tracking-[0.3em]">Memories</span>
+            </div>
+            <p className="text-sm text-[#8A8F99] mb-4 leading-relaxed">{buildSummary(date, group)}</p>
+            <ul className="text-sm text-[#8A8F99] space-y-4">
               {group.map((f) => (
-                <li key={f.id} className="flex items-center justify-between gap-4">
-                  <div>
-                    <div className="font-medium">{f.meta?.originalName || 'Encrypted file'}</div>
-                    <div className="text-xs text-slate-400">ID: {f.id}</div>
-                    {f.cid && <div className="text-xs text-slate-400">CID: {f.cid}</div>}
+                <li
+                  key={f.id}
+                  className="flex items-center justify-between gap-6 border border-white/5 rounded-xl p-4 bg-[#0f1115] shadow-[0_2px_12px_rgba(0,0,0,0.35)]"
+                >
+                  <div className="space-y-1">
+                    <div className="font-['Playfair_Display'] text-base text-white">{f.meta?.originalName || 'Encrypted file'}</div>
+                    <div className="text-xs text-[#6c707a]">ID: {f.id}</div>
+                    {f.cid && <div className="text-xs text-[#6c707a]">CID: {f.cid}</div>}
                     {f.anchored && f.anchorTxHash && (
-                      <div>
+                      <div className="space-y-1">
                         <div className="text-xs text-emerald-300">Anchored on QIE ✅</div>
                         <a
                           href={`https://testnet.qie.digital/tx/${f.anchorTxHash}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-emerald-400 underline text-sm"
+                          className="text-emerald-300 underline text-xs"
                         >
                           View on Explorer
                         </a>
@@ -101,7 +108,7 @@ function Timeline() {
                   <div>
                     {!f.anchored && f.cid && (
                       <button
-                        className="px-3 py-1 bg-emerald-600 text-xs rounded-md"
+                        className="px-4 py-2 rounded-md bg-[#6aa4ff] text-[#0d0e11] text-xs font-semibold shadow-lg shadow-[#6aa4ff26] hover:bg-[#82b4ff] transition-all duration-300 hover:-translate-y-1"
                         disabled={!!anchoring[f.id]}
                         onClick={() => anchorFile(f.id)}
                       >
