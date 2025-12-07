@@ -10,7 +10,7 @@ async function ensureTmpFile() {
 }
 
 describe('POST /api/upload', () => {
-  it('stores metadata in lowdb', async () => {
+  it('stores metadata in Supabase', async () => {
     await ensureTmpFile();
     const res = await request(app)
       .post('/api/upload')

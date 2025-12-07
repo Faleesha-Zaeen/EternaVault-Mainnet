@@ -4,8 +4,6 @@ import multer from 'multer';
 import dotenv from 'dotenv';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { Low } from 'lowdb';
-import { JSONFile } from 'lowdb/node';
 import { nanoid } from 'nanoid';
 import fs from 'fs';
 import { JsonRpcProvider, Wallet, Contract } from 'ethers';
@@ -13,6 +11,15 @@ import fetch from 'node-fetch';
 import validatorsRouter from './routes/validators.js';
 import filesRouter from './routes/files.js';
 import profileRouter from './routes/profile.js';
+import {
+  insertFileRecord,
+  listFilesByDid,
+  getFileRecord,
+  registerDid,
+  saveDeathStatus,
+  getDeathStatus,
+} from './lib/dataStore.js';
+import { uploadEncryptedFile, downloadEncryptedFile } from './lib/storage.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -55,28 +62,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const upload = multer({ dest: join(process.cwd(), 'backend', 'storage', 'tmp') });
-
-// ✅ FIXED: DB now includes profile object
-const dbFile = join(process.cwd(), 'backend', 'db.json');
-const adapter = new JSONFile(dbFile);
-const db = new Low(adapter, { files: [], dids: [], statuses: {}, profile: {} });
-
-await db.read();
-
-// Ensure structure exists even if db.json already existed but was missing profile
-if (!db.data) {
-  db.data = { files: [], dids: [], statuses: {}, profile: {} };
-  await db.write();
-} else {
-  if (!db.data.profile) db.data.profile = {};
-  await db.write();
+const storageRoot = join(process.cwd(), 'backend', 'storage');
+const uploadTmpDir = join(storageRoot, 'tmp');
+if (!fs.existsSync(uploadTmpDir)) {
+  fs.mkdirSync(uploadTmpDir, { recursive: true });
 }
 
-const storageDir = join(process.cwd(), 'backend', 'storage');
-if (!fs.existsSync(storageDir)) {
-  fs.mkdirSync(storageDir, { recursive: true });
-}
+const upload = multer({ dest: uploadTmpDir });
 
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   try {
@@ -89,19 +81,28 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Missing file/meta/ownerDid' });
     }
 
-    const meta = JSON.parse(metaStr);
+    let meta = null;
+    try {
+      meta = JSON.parse(metaStr);
+    } catch (err) {
+      return res.status(400).json({ ok: false, error: 'Invalid meta JSON' });
+    }
     const title = meta.title || '';
     const description = meta.description || '';
     const id = nanoid();
     const filename = `${id}.enc`;
-    const storedPath = join(storageDir, filename);
+    const storedPath = `${ownerDid}/${filename}`;
 
-    fs.renameSync(file.path, storedPath);
+    try {
+      await uploadEncryptedFile(file.path, storedPath);
+    } finally {
+      await fs.promises.unlink(file.path).catch(() => {});
+    }
 
     const record = {
-      id,
       ownerDid,
       storedPath,
+      storagePath: storedPath,
       meta,
       title,
       description,
@@ -112,8 +113,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       timestamp: new Date().toISOString(),
     };
 
-    db.data.files.push(record);
-    await db.write();
+    await insertFileRecord(record);
 
     res.json({ ok: true, id });
   } catch (err) {
@@ -125,8 +125,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 app.get('/api/files', async (req, res) => {
   const did = req.query.did;
   if (!did) return res.status(400).json([]);
-  await db.read();
-  const list = db.data.files.filter((f) => f.ownerDid === did);
+  const list = await listFilesByDid(did);
   res.json(list);
 });
 
@@ -136,17 +135,28 @@ app.get('/api/file/:id', async (req, res) => {
   if (as !== 'encrypted') {
     return res.status(400).json({ error: 'Only as=encrypted is supported for now' });
   }
-  await db.read();
-  const record = db.data.files.find((f) => f.id === id);
+  const record = await getFileRecord(id);
   if (!record) return res.status(404).json({ error: 'Not found' });
 
-  res.download(record.storedPath, record.meta?.originalName || `${id}.enc`);
+  const storagePath = record.storagePath || record.storedPath;
+  if (!storagePath) return res.status(500).json({ error: 'File storage path missing' });
+
+  try {
+    const buffer = await downloadEncryptedFile(storagePath);
+    const downloadName = record.meta?.originalName || `${id}.enc`;
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Length', buffer.length);
+    res.attachment(downloadName);
+    return res.send(buffer);
+  } catch (err) {
+    console.error('Encrypted download failed:', err.message);
+    return res.status(500).json({ error: 'Download failed' });
+  }
 });
 
 app.post('/api/register-did', async (_req, res) => {
   const did = `did:eternavault:${nanoid(10)}`;
-  db.data.dids.push({ did, createdAt: new Date().toISOString() });
-  await db.write();
+  await registerDid(did);
   res.json({
     did,
     note: 'QIE on-chain mapping will go here',
@@ -158,11 +168,11 @@ app.post('/api/notify-death', async (req, res) => {
   const { did } = req.body || {};
   if (!did) return res.status(400).json({ error: 'did is required' });
 
-  db.data.statuses[did] = {
+  const statusPayload = {
     deceased: true,
     markedAt: new Date().toISOString(),
   };
-  await db.write();
+  await saveDeathStatus(did, statusPayload);
 
   // Attempt on-chain markDeceased
   try {
@@ -170,9 +180,9 @@ app.post('/api/notify-death', async (req, res) => {
     const tx = await contract.markDeceased();
     console.log('markDeceased tx hash:', tx.hash);
     await tx.wait();
-    db.data.statuses[did].txHash = tx.hash;
-    db.data.statuses[did].chain = 'qie-testnet';
-    await db.write();
+    statusPayload.txHash = tx.hash;
+    statusPayload.chain = 'qie-testnet';
+    await saveDeathStatus(did, statusPayload);
     return res.json({ ok: true, txHash: tx.hash });
   } catch (err) {
     console.error('markDeceased on-chain failed:', err);
@@ -184,8 +194,7 @@ app.post('/api/notify-death', async (req, res) => {
 app.get('/api/simulate-unlock', async (req, res) => {
   const heir = req.query.heir;
   const demoDid = 'demo-owner';
-  await db.read();
-  const files = db.data.files.filter((f) => f.ownerDid === demoDid);
+  const files = await listFilesByDid(demoDid);
 
   let allowed = false;
   if (heir) {
@@ -207,8 +216,7 @@ app.get('/api/simulate-unlock', async (req, res) => {
 // Death status route — returns local + on-chain info if present
 app.get('/api/death-status', async (req, res) => {
   const did = req.query.did || 'demo-owner';
-  await db.read();
-  const status = db.data.statuses[did] || null;
+  const status = await getDeathStatus(did);
   res.json(status || { deceased: false });
 });
 
@@ -238,8 +246,7 @@ app.post('/api/generate-story', async (req, res) => {
     const { did, memory } = req.body || {};
     if (!did) return res.status(400).json({ ok: false, success: false, error: 'Missing DID' });
 
-    await db.read();
-    const files = db.data.files.filter((f) => f.ownerDid === did);
+    const files = await listFilesByDid(did);
 
     if (!files.length) {
       return res.json({ ok: false, success: false, message: 'No files available to summarize.' });

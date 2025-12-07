@@ -1,18 +1,12 @@
 import express from 'express';
 import { join } from 'path';
 import fs from 'fs';
-import { Low } from 'lowdb';
-import { JSONFile } from 'lowdb/node';
 import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
 import { JsonRpcProvider, Wallet, Contract, keccak256, toUtf8Bytes } from 'ethers';
+import { getFileRecord, updateFileRecord } from '../lib/dataStore.js';
 
 dotenv.config();
 const router = express.Router();
-
-const dbFile = join(process.cwd(), 'backend', 'db.json');
-const adapter = new JSONFile(dbFile);
-const db = new Low(adapter, { files: [], dids: [], statuses: {} });
 
 const abiPath = join(process.cwd(), 'backend', 'src', 'abi', 'LegacyVault.json');
 let LegacyVaultAbi = null;
@@ -29,10 +23,7 @@ router.post('/anchor-cid', async (req, res) => {
     const { fileId } = req.body || {};
     if (!fileId) return res.status(400).json({ ok: false, error: 'MISSING_FILE_ID' });
 
-    await db.read();
-    if (!db.data) db.data = { files: [] };
-
-    const record = db.data.files.find((f) => f.id === fileId);
+    const record = await getFileRecord(fileId);
     if (!record) return res.status(400).json({ ok: false, error: 'FILE_NOT_FOUND' });
     if (!record.cid) return res.status(400).json({ ok: false, error: 'NO_CID' });
 
@@ -56,9 +47,10 @@ router.post('/anchor-cid', async (req, res) => {
       const receipt = await tx.wait();
 
       // update db
-      record.anchorTxHash = tx.hash;
-      record.anchored = true;
-      await db.write();
+      await updateFileRecord(fileId, {
+        anchorTxHash: tx.hash,
+        anchored: true,
+      });
 
       return res.json({ ok: true, txHash: tx.hash, fileId });
     } catch (contractErr) {
