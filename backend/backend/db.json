@@ -553,7 +553,7 @@
       "deceased": true,
       "markedAt": "2025-12-03T08:35:57.781Z",
       "txHash": "0xdeddbd2baaf1661b77a5ca10259c742457fe8f14bd6c25c99e1263595c650ce1",
-      "chain": "qie-testnet"
+      "chain": "QIEMainnet"
     }
   },
   "profile": {}

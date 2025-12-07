@@ -10,7 +10,7 @@ EternaVault is a hackathon-ready prototype that mixes client-side encryption, se
 
 - `frontend/` – Vite + React + Tailwind UI for uploads, timelines, validators, tokenization, heirs, and AI storytelling
 - `backend/` – Express + lowdb API that manages encrypted blobs, contract calls, Gemini prompts, and DID/profile data
-- `contracts/` – Hardhat workspace containing the `LegacyVault.sol` contract deployed to the QIE Testnet
+- `contracts/` – Hardhat workspace containing the `LegacyVault.sol` contract deployed to the QIE Mainnet
 
 > ⚖️ **Prototype Only** – This is NOT a production inheritance system nor legal advice. Always involve real legal counsel and compliance experts before building on these ideas.
 
@@ -18,7 +18,7 @@ EternaVault is a hackathon-ready prototype that mixes client-side encryption, se
 
 ## Quick Facts
 
-- **Goal:** Preserve encrypted memories, anchor them to the QIE Testnet, and grant heirs access once validators or death events confirm eligibility.
+- **Goal:** Preserve encrypted memories, anchor them to the QIE Mainnet, and grant heirs access once validators or death events confirm eligibility.
 - **Core differentiator:** Client-side encryption + on-chain governance + optional AI narrative of a person’s life.
 - **Primary contract:** `LegacyVault.sol` (register heirs/validators, mark deceased, map fileId → CID).
 - **Latest highlight:** Gemini-powered “AI Legacy Story” generator with placeholder PDF export path.
@@ -101,7 +101,7 @@ Supporting pieces:
 - npm 9+
 - (Optional) Web3.Storage account for real IPFS uploads
 - (Optional) Google Gemini API key for AI storytelling
-- (Optional) QIE Testnet wallet with test funds to execute on-chain calls
+- (Optional) QIE Mainnet wallet with QIEV3 for on-chain calls
 
 ---
 
@@ -111,13 +111,15 @@ Create `.env` in the repo root (or copy from `.env.example`) and fill the values
 
 | Variable | Description |
 |----------|-------------|
-| `QIE_RPC_URL` | QIE Testnet RPC endpoint (e.g., `https://rpc1testnet.qie.digital/`) |
-| `QIE_CHAIN_ID` | Chain ID for the selected QIE network |
+| `QIE_RPC_URL` | QIE Mainnet RPC endpoint (e.g., `https://rpc1mainnet.qie.digital/`) |
+| `QIE_CHAIN_ID` | Chain ID for the selected QIE network (use `1990` for QIEMainnet) |
 | `PRIVATE_KEY` | Backend signer for contract calls (never commit real keys) |
 | `VAULT_ADDRESS` | Deployed `LegacyVault` contract address |
 | `FRONTEND_PORT` | Port for Vite dev server (defaults to `5173`) |
 | `WEB3_STORAGE_KEY` | Backend token for Web3.Storage (optional) |
 | `VITE_WEB3_STORAGE_KEY` | Frontend token for direct uploads (optional) |
+| `VITE_QIE_RPC_URL` | Frontend RPC endpoint (e.g., `https://rpc1mainnet.qie.digital/`) |
+| `VITE_VAULT_ADDRESS` | Frontend contract address reference for QIEMainnet |
 | `STORAGE_PROVIDER` | `NFT_STORAGE`/`WEB3_STORAGE`/`LOCAL` hint for future providers |
 | `GEMINI_API_KEY` | Google Generative Language key used by `/api/generate-story` |
 
@@ -199,7 +201,7 @@ Routers live in `backend/src/routes/*.js`, while the rest of the endpoints resid
 - `setUnlockTimestamp(uint256 ts)` – optional time-lock controls
 - `canAccess(address user)` – read-only unlock check used by the backend
 
-Compile via `npx hardhat compile` and deploy to QIE Testnet to obtain the `VAULT_ADDRESS` consumed by the backend helper.
+Compile via `npx hardhat compile` and deploy to QIE Mainnet to obtain the `VAULT_ADDRESS` consumed by the backend helper.
 
 ---
 

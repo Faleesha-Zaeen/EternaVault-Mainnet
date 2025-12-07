@@ -20,5 +20,5 @@ export function getQieSigner() {
   return new Wallet(pk, provider);
 }
 
-// TODO: Later add helpers for calling LegacyVault contract on QIE Testnet,
+// TODO: Later add helpers for calling LegacyVault contract on QIEMainnet,
 // e.g., getLegacyVaultContract(address) using ABI + signer.

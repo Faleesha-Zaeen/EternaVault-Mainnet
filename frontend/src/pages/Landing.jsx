@@ -16,7 +16,7 @@ function Landing() {
         EternaVault – Where Identity Meets Eternity
       </h1>
       <p className="text-slate-400 max-w-2xl leading-relaxed">
-        Encrypt your memories client-side, anchor them on QIE Testnet, and
+        Encrypt your memories client-side, anchor them on QIE Mainnet, and
         empower your heirs to access them only when the time is right.
       </p>
       <div className="flex flex-wrap justify-center gap-4 mt-4">

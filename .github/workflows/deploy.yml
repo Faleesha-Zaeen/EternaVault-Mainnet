@@ -1,4 +1,4 @@
-name: Deploy Hardhat to QIE Testnet
+name: Deploy Hardhat to QIE Mainnet
 
 on:
   workflow_dispatch:
@@ -21,16 +21,17 @@ jobs:
         working-directory: contracts
         run: npm install
 
-      - name: Deploy to QIE Testnet
+      - name: Deploy to QIE Mainnet
         working-directory: contracts
         env:
           QIE_RPC_URL: ${{ secrets.QIE_RPC_URL }}
+          QIE_CHAIN_ID: 1990
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         run: |
           set -e
-          echo "Deploying LegacyVault to qieTestnet..."
+          echo "Deploying LegacyVault to qieMainnet..."
           
-          npx hardhat run scripts/deploy.js --network qieTestnet > deploy_output.txt 2>&1 || (cat deploy_output.txt && exit 1)
+          npx hardhat run scripts/deploy.js --network qieMainnet > deploy_output.txt 2>&1 || (cat deploy_output.txt && exit 1)
 
           echo "===== Raw Deploy Output ====="
           cat deploy_output.txt

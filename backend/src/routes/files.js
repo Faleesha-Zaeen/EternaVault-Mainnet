@@ -29,7 +29,7 @@ router.post('/anchor-cid', async (req, res) => {
 
     const rpcUrl = process.env.QIE_RPC_URL;
     const pk = process.env.PRIVATE_KEY;
-    const vaultAddr = process.env.VAULT_ADDRESS || process.env.REACT_APP_VAULT_ADDRESS;
+    const vaultAddr = process.env.VAULT_ADDRESS;
 
     if (!rpcUrl || !pk || !vaultAddr || !LegacyVaultAbi) {
       console.error('Missing env or ABI for anchoring', { rpcUrl: !!rpcUrl, pk: !!pk, vaultAddr: !!vaultAddr, hasAbi: !!LegacyVaultAbi });

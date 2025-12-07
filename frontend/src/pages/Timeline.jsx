@@ -95,7 +95,7 @@ function Timeline() {
                       <div className="space-y-1">
                         <div className="text-xs text-emerald-300">Anchored on QIE ✅</div>
                         <a
-                          href={`https://testnet.qie.digital/tx/${f.anchorTxHash}`}
+                          href={`https://mainnet.qie.digital/tx/${f.anchorTxHash}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-emerald-300 underline text-xs"

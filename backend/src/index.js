@@ -47,7 +47,7 @@ try {
 
 const rpcUrl = process.env.QIE_RPC_URL;
 const pk = process.env.PRIVATE_KEY;
-const vaultAddr = process.env.VAULT_ADDRESS || '0x2A29BeCCe643dD1a6f4D823deE3F28F45BdBc7cd';
+const vaultAddr = process.env.VAULT_ADDRESS;
 
 function getVaultContract() {
   if (!rpcUrl || !pk || !vaultAddr || !LegacyVaultAbi) {
@@ -181,7 +181,7 @@ app.post('/api/notify-death', async (req, res) => {
     console.log('markDeceased tx hash:', tx.hash);
     await tx.wait();
     statusPayload.txHash = tx.hash;
-    statusPayload.chain = 'qie-testnet';
+    statusPayload.chain = 'QIEMainnet';
     await saveDeathStatus(did, statusPayload);
     return res.json({ ok: true, txHash: tx.hash });
   } catch (err) {

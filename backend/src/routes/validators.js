@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
     const provider = new JsonRpcProvider(rpcUrl);
 
     // If VAULT_ADDRESS is provided, try to read past events. If not, return demo list.
-    const vaultAddr = process.env.VAULT_ADDRESS || process.env.REACT_APP_VAULT_ADDRESS;
+    const vaultAddr = process.env.VAULT_ADDRESS;
     if (!vaultAddr) {
       // Demo hard-coded list
       return res.json({ validators: [
@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
 
     const rpcUrl = process.env.QIE_RPC_URL;
     const pk = process.env.PRIVATE_KEY;
-    const vaultAddr = process.env.VAULT_ADDRESS || process.env.REACT_APP_VAULT_ADDRESS;
+    const vaultAddr = process.env.VAULT_ADDRESS;
 
     if (!rpcUrl || !pk || !vaultAddr) {
       return res.status(400).json({ error: 'missing QIE_RPC_URL/PRIVATE_KEY/VAULT_ADDRESS in env' });

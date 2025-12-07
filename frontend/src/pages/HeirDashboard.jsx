@@ -173,7 +173,7 @@ function HeirDashboard() {
           deceased: true,
           markedAt: new Date().toISOString(),
           txHash: data.txHash || prev?.txHash,
-          chain: 'qie-testnet',
+          chain: 'QIEMainnet',
         }));
       } else {
         setMessage('Activation failed. Check console for details.');
@@ -315,7 +315,7 @@ function HeirDashboard() {
             <p className="text-sm text-emerald-300">Status: Legacy activated on QIE ✅</p>
             {deathStatus.txHash && (
               <a
-                href={`https://testnet.qie.digital/tx/${deathStatus.txHash}`}
+                href={`https://mainnet.qie.digital/tx/${deathStatus.txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-emerald-300 underline text-xs"

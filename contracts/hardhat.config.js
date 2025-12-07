@@ -7,9 +7,9 @@ module.exports = {
   solidity: "0.8.18",
   networks: {
     hardhat: {},
-    qieTestnet: {
+    qieMainnet: {
       url: QIE_RPC_URL,
-      chainId: QIE_CHAIN_ID ? Number(QIE_CHAIN_ID) : 1983,
+      chainId: QIE_CHAIN_ID ? Number(QIE_CHAIN_ID) : 1990,
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
     },
   },
