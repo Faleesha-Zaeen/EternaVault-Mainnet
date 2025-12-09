@@ -1,40 +1,34 @@
 # EternaVault – QIE Mainnet Digital Legacy Vault
 
-<!-- Core -->
-![QIE Mainnet](https://img.shields.io/badge/Blockchain-QIE_Mainnet-4A90E2?logo=ethereum&logoColor=white)
-![ChainID](https://img.shields.io/badge/Chain_ID-1990-blue)
-![Status](https://img.shields.io/badge/Status-Hackathon_Prototype-orange)
-
-<!-- Smart Contracts -->
-![Solidity](https://img.shields.io/badge/Solidity-0.8.18-363636?logo=solidity)
-![Hardhat](https://img.shields.io/badge/Framework-Hardhat-fcc23c)
-
-<!-- Frontend -->
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-Bundler-646CFF?logo=vite&logoColor=white)
-
-<!-- Backend -->
-![Node](https://img.shields.io/badge/Node.js-18-339933?logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/API-Express.js-000000?logo=express)
-
-<!-- Storage -->
-![Supabase](https://img.shields.io/badge/Storage-Supabase-3ECF8E?logo=supabase&logoColor=white)
-![Postgres](https://img.shields.io/badge/Database-Postgres-336791?logo=postgresql&logoColor=white)
-
-<!-- Security -->
-![AES-GCM](https://img.shields.io/badge/Encryption-AES--GCM_256bit-black)
-![Client Side](https://img.shields.io/badge/Security-Client--Side_Only-green)
-
-<!-- AI -->
-![OpenRouter](https://img.shields.io/badge/AI-OpenRouter-purple)
-![Model](https://img.shields.io/badge/Model-deepseek_r1-orange)
-
-<!-- Deployment -->
-![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
-![Render](https://img.shields.io/badge/Backend-Render-blue?logo=render)
-
-<!-- Hackathon -->
-![Hackathon](https://img.shields.io/badge/QIE_Hackathon-2025-orange)
+<p align="center">
+	<!-- Core -->
+	<img src="https://img.shields.io/badge/Blockchain-QIE_Mainnet-4A90E2?logo=ethereum&logoColor=white" alt="QIE Mainnet" />
+	<img src="https://img.shields.io/badge/Chain_ID-1990-blue" alt="Chain ID 1990" />
+	<img src="https://img.shields.io/badge/Status-Hackathon_Prototype-orange" alt="Hackathon Prototype" />
+	<!-- Smart Contracts -->
+	<img src="https://img.shields.io/badge/Solidity-0.8.18-363636?logo=solidity" alt="Solidity" />
+	<img src="https://img.shields.io/badge/Framework-Hardhat-fcc23c" alt="Hardhat" />
+	<!-- Frontend -->
+	<img src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black" alt="React" />
+	<img src="https://img.shields.io/badge/Vite-Bundler-646CFF?logo=vite&logoColor=white" alt="Vite" />
+	<!-- Backend -->
+	<img src="https://img.shields.io/badge/Node.js-18-339933?logo=node.js&logoColor=white" alt="Node.js" />
+	<img src="https://img.shields.io/badge/API-Express.js-000000?logo=express" alt="Express" />
+	<!-- Storage -->
+	<img src="https://img.shields.io/badge/Storage-Supabase-3ECF8E?logo=supabase&logoColor=white" alt="Supabase" />
+	<img src="https://img.shields.io/badge/Database-Postgres-336791?logo=postgresql&logoColor=white" alt="Postgres" />
+	<!-- Security -->
+	<img src="https://img.shields.io/badge/Encryption-AES--GCM_256bit-black" alt="AES-GCM" />
+	<img src="https://img.shields.io/badge/Security-Client--Side_Only-green" alt="Client-side security" />
+	<!-- AI -->
+	<img src="https://img.shields.io/badge/AI-OpenRouter-purple" alt="OpenRouter" />
+	<img src="https://img.shields.io/badge/Model-deepseek_r1-orange" alt="deepseek_r1" />
+	<!-- Deployment -->
+	<img src="https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel" alt="Vercel" />
+	<img src="https://img.shields.io/badge/Backend-Render-blue?logo=render" alt="Render" />
+	<!-- Hackathon -->
+	<img src="https://img.shields.io/badge/QIE_Hackathon-2025-orange" alt="QIE Hackathon 2025" />
+</p>
 
 
 > Client-side encrypted digital vault that anchors heir permissions on the QIE Mainnet (chainId `1990`), streams encrypted blobs through Supabase + Web3.Storage, and unlocks stories for heirs only after validators confirm the legacy.
