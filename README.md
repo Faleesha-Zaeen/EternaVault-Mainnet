@@ -1,5 +1,7 @@
 # EternaVault – QIE Mainnet Digital Legacy Vault
 
+EternaVault is a client-side encrypted digital inheritance vault powered by QIE Mainnet. Every unlock is cryptographically authorized, publicly verifiable, and impossible to alter — not even the company can override the owner’s final wishes. By anchoring ownership, access control, and final intent on-chain, EternaVault delivers a guarantee no centralized system can offer after death.
+
 <p align="center">
 	<!-- Core -->
 	<img src="https://img.shields.io/badge/Blockchain-QIE_Mainnet-4A90E2?logo=ethereum&logoColor=white" alt="QIE Mainnet" />
