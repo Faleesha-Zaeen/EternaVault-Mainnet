@@ -6,23 +6,6 @@
 - `LegacyVault.sol` governs heirs, validators, and CID proofs so unlocks stay publicly auditable.
 - Heirs decrypt entirely in-browser once validators confirm death status, then can request AI-written memorial summaries.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Blockchain-QIE_Mainnet-4A90E2?logo=ethereum&logoColor=white" alt="QIE Mainnet" />
-  <img src="https://img.shields.io-badge/Chain_ID-1990-blue" alt="Chain ID 1990" />
-  <img src="https://img.shields.io-badge/Status-Hackathon_Prototype-orange" alt="Hackathon Prototype" />
-  <img src="https://img.shields.io-badge/Solidity-0.8.18-363636?logo=solidity" alt="Solidity" />
-  <img src="https://img.shields.io-badge/Framework-Hardhat-fcc23c" alt="Hardhat" />
-  <img src="https://img.shields.io-badge/React-18-61DAFB?logo=react&logoColor=black" alt="React" />
-  <img src="https://img.shields.io-badge/Vite-Bundler-646CFF?logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io-badge/Node.js-18-339933?logo=node.js&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io-badge/API-Express.js-000000?logo=express" alt="Express" />
-  <img src="https://img.shields.io-badge/Storage-Supabase-3ECF8E?logo=supabase&logoColor=white" alt="Supabase" />
-  <img src="https://img.shields.io-badge/Database-Postgres-336791?logo=postgresql&logoColor=white" alt="Postgres" />
-  <img src="https://img.shields.io-badge/Encryption-AES--GCM_256bit-black" alt="AES-GCM" />
-  <img src="https://img.shields.io-badge/AI-OpenRouter-purple" alt="OpenRouter" />
-  <img src="https://img.shields.io-badge/QIE_Hackathon-2025-orange" alt="QIE Hackathon 2025" />
-</p>
-
 ## Overview
 EternaVault is a digital legacy vault where every file, memory, and instruction is encrypted before leaving the browser. Supabase stores only ciphertext, Web3.Storage can hold redundant CIDs, and the `LegacyVault.sol` contract on QIE Mainnet proves who can access what after the owner’s death. Validators attest to death events, heirs unlock data client-side, and optional AI summaries help craft compassionate narratives without touching plaintext.
 
