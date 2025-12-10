@@ -434,7 +434,7 @@ function HeirDashboard() {
                   className="px-4 py-2 rounded-md bg-[#6a5b99] text-sm font-semibold hover:bg-[#8170b3] disabled:opacity-40 transition-all duration-300 hover:-translate-y-1"
                   disabled={!decryptedEntries[selectedEntry.id] || summaryLoading}
                 >
-                  {summaryLoading ? 'Summoning AI…' : '🧠 Generate AI Legacy Story'}
+                  {summaryLoading ? 'Summoning AI…' : 'Generate AI Legacy Story'}
                 </button>
               </div>
             )}
