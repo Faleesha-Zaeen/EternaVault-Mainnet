@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 import { nanoid } from 'nanoid';
 import fs from 'fs';
 import { JsonRpcProvider, Wallet, Contract } from 'ethers';
-import fetch from 'node-fetch';
 import validatorsRouter from './routes/validators.js';
 import filesRouter from './routes/files.js';
 import profileRouter from './routes/profile.js';
