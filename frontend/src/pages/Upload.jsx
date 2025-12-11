@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { encryptFile } from '../utils/crypto.js';
 import { uploadEncryptedBlob } from '../utils/storage.js';
 
+const API_BASE = import.meta.env.VITE_API_BASE || '';
+
 function Upload() {
   const [file, setFile] = useState(null);
   const [vaultKey, setVaultKey] = useState('');
@@ -59,7 +61,7 @@ function Upload() {
       if (cid) formData.append('cid', cid);
 
       setStatus('Uploading to backend...');
-      const res = await fetch('/api/upload', {
+      const res = await fetch(`${API_BASE}/api/upload`, {
         method: 'POST',
         body: formData,
       });
