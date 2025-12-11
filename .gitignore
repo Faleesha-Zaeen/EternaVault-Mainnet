@@ -13,3 +13,7 @@ dist
 coverage
 .cache
 artifacts
+
+node_modules/
+
+package-lock.json
