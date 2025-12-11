@@ -9,7 +9,7 @@ function TokenizationInfo() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('/api/profile/token?did=demo-owner');
+        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/profile/token?did=demo-owner`);
         const data = await res.json();
         setTokenAddress(data.tokenAddress || '');
         setMarketLink(data.marketLink || '');
@@ -25,7 +25,7 @@ function TokenizationInfo() {
   const save = async () => {
     setSaving(true);
     try {
-      const res = await fetch('/api/profile/token', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/profile/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

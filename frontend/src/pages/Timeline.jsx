@@ -26,7 +26,7 @@ function Timeline() {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const res = await fetch('/api/files?did=demo-owner');
+        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/files?did=demo-owner`);
         const data = await res.json();
         setFiles(data || []);
       } catch (e) {
@@ -41,7 +41,7 @@ function Timeline() {
   const anchorFile = async (fileId) => {
     try {
       setAnchoring((s) => ({ ...s, [fileId]: true }));
-      const res = await fetch('/api/anchor-cid', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/anchor-cid`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileId }),

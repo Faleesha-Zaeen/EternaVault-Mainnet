@@ -20,7 +20,7 @@ export default function ValidatorDashboard() {
   const handleRegisterValidator = async () => {
     try {
       setMessage("⏳ Sending transaction...");
-      const res = await axios.post("http://localhost:4000/api/validators", {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE}/api/validators`, {
         address: walletAddress,
       });
 

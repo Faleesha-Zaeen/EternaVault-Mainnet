@@ -23,7 +23,7 @@ function HeirDashboard() {
   useEffect(() => {
     const fetchDeathStatus = async () => {
       try {
-        const res = await fetch('/api/death-status?did=demo-owner');
+        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/death-status?did=demo-owner`);
         const data = await res.json();
         setDeathStatus(data);
       } catch (e) {
@@ -76,7 +76,7 @@ function HeirDashboard() {
     setCheckingAccess(true);
     setMessage('Checking on-chain access permissions...');
     try {
-      const res = await fetch(`/api/simulate-unlock?heir=${encodeURIComponent(heirAddress)}`);
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/simulate-unlock?heir=${encodeURIComponent(heirAddress)}`);
       const data = await res.json();
       setUnlockResult(data);
       if (data.allowed) {
@@ -118,7 +118,7 @@ function HeirDashboard() {
 
     setMessage('Registering heir on QIE blockchain...');
     try {
-      const res = await fetch('/api/register-heir', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/register-heir`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ heir: heirAddress }),
@@ -160,7 +160,7 @@ function HeirDashboard() {
     setActivating(true);
     setMessage('Sending Legacy activation transaction...');
     try {
-      const res = await fetch('/api/notify-death', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/notify-death`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ did: 'demo-owner' }),
@@ -202,7 +202,7 @@ function HeirDashboard() {
         setMessage('Downloading encrypted blob...');
         setModalNote('Downloading encrypted blob...');
       }
-      const res = await fetch(`/api/file/${entry.id}?as=encrypted`);
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/file/${entry.id}?as=encrypted`);
       const buffer = await res.arrayBuffer();
       if (!silent) {
         setMessage('Decrypting in browser...');
@@ -266,7 +266,7 @@ function HeirDashboard() {
           snippet: decryptedSnippets[entry.id] || '',
         },
       };
-      const res = await fetch('/api/generate-story', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/generate-story`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
