@@ -192,14 +192,20 @@ app.post('/api/notify-death', async (req, res) => {
 
 app.get('/api/simulate-unlock', async (req, res) => {
   const heir = req.query.heir;
-  const demoDid = 'demo-owner';
-  const files = await listFilesByDid(demoDid);
+  const did = req.query.did;
+
+  // Require DID from the client
+  if (!did) {
+    return res.json({ allowed: false, files: [] });
+  }
+
+  // Fetch only this DID's files
+  const files = await listFilesByDid(did);
 
   let allowed = false;
   if (heir) {
     try {
       const contract = getVaultContract();
-      // contract.canAccess may return a boolean or a value convertible to boolean
       const can = await contract.canAccess(heir);
       allowed = !!can;
     } catch (err) {
@@ -208,6 +214,7 @@ app.get('/api/simulate-unlock', async (req, res) => {
     }
   }
 
+  // Only return files for this DID if contract allows
   const result = allowed ? files : [];
   return res.json({ allowed, files: result });
 });
