@@ -26,6 +26,9 @@ function Timeline() {
   const { walletAddress } = useWallet();
 
   useEffect(() => {
+    if (!walletAddress) {
+      return;
+    }
     const fetchFiles = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/files?did=${walletAddress}`);
@@ -39,6 +42,10 @@ function Timeline() {
     };
     fetchFiles();
   }, [walletAddress]);
+
+  if (!walletAddress) {
+    return <p className="text-center text-slate-400">Please connect your wallet to view your timeline.</p>;
+  }
 
   const anchorFile = async (fileId) => {
     try {
