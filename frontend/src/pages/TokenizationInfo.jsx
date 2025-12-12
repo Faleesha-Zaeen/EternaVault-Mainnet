@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useWallet } from '../context/WalletContext';
 
 function TokenizationInfo() {
   const [tokenAddress, setTokenAddress] = useState('');
   const [marketLink, setMarketLink] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const { walletAddress } = useWallet();
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/profile/token?did=demo-owner`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/profile/token?did=${walletAddress}`);
         const data = await res.json();
         setTokenAddress(data.tokenAddress || '');
         setMarketLink(data.marketLink || '');
@@ -20,7 +22,7 @@ function TokenizationInfo() {
       }
     };
     fetchProfile();
-  }, []);
+  }, [walletAddress]);
 
   const save = async () => {
     setSaving(true);
@@ -29,7 +31,7 @@ function TokenizationInfo() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          did: 'demo-owner',
+          did: walletAddress,
           tokenAddress: tokenAddress || null,
           marketLink: marketLink || null,
         }),

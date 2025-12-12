@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { encryptFile } from '../utils/crypto.js';
-import { uploadEncryptedBlob } from '../utils/storage.js';
+import { useWallet } from '../context/WalletContext';
 
 
 function Upload() {
@@ -11,6 +11,7 @@ function Upload() {
   const [status, setStatus] = useState('');
   const [uploadError, setUploadError] = useState('');
   const [showKeyWarning, setShowKeyWarning] = useState(false);
+  const { walletAddress } = useWallet();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,31 +25,13 @@ function Upload() {
       setStatus('Encrypting file...');
       const { encryptedBlob, meta } = await encryptFile(file, vaultKey);
 
-      // Upload encrypted blob to Web3.Storage (IPFS) if a token is available
-      const WEB3_STORAGE_KEY = import.meta.env.VITE_WEB3_STORAGE_KEY;
       let cid = null;
-      if (!WEB3_STORAGE_KEY) {
-        console.warn('VITE_WEB3_STORAGE_KEY is missing — skipping Web3.Storage upload');
-      } else {
-        try {
-          setUploadError('');
-          setStatus('Uploading encrypted blob to Web3.Storage...');
-          cid = await uploadEncryptedBlob(encryptedBlob, WEB3_STORAGE_KEY);
-          console.log('Uploaded to Web3.Storage CID:', cid);
-        } catch (err) {
-          console.error('Web3.Storage upload failed', err);
-          const msg = (err && err.message) ? err.message.toLowerCase() : String(err).toLowerCase();
-          if (msg.includes('503') || msg.includes('service unavailable') || msg.includes('maintenance')) {
-            setUploadError('⚠ Web3.Storage is temporarily offline.\nPlease retry in a few minutes.');
-          }
-          // continue — we still upload to backend storage
-        }
-      }
+      // Skipping Web3.Storage — using backend upload only
 
       const formData = new FormData();
       formData.append('file', encryptedBlob, `${file.name}.enc`);
       formData.append('meta', JSON.stringify({
-        ownerDid: 'demo-owner',
+        ownerDid: walletAddress,
         originalName: file.name,
         timestamp: new Date().toISOString(),
         cryptoMeta: meta,
@@ -56,7 +39,7 @@ function Upload() {
         description,
         encryptionMode: 'single-key',
       }));
-      formData.append('ownerDid', 'demo-owner');
+      formData.append('ownerDid', walletAddress);
       if (cid) formData.append('cid', cid);
 
       setStatus('Uploading to backend...');

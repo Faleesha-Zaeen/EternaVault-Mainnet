@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useWallet } from '../context/WalletContext';
 
 function groupByDate(files) {
   const groups = {};
@@ -22,11 +23,12 @@ function Timeline() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [anchoring, setAnchoring] = useState({});
+  const { walletAddress } = useWallet();
 
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/files?did=demo-owner`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/files?did=${walletAddress}`);
         const data = await res.json();
         setFiles(data || []);
       } catch (e) {
@@ -36,7 +38,7 @@ function Timeline() {
       }
     };
     fetchFiles();
-  }, []);
+  }, [walletAddress]);
 
   const anchorFile = async (fileId) => {
     try {
@@ -44,7 +46,7 @@ function Timeline() {
       const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/anchor-cid`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fileId }),
+        body: JSON.stringify({ fileId, did: walletAddress }),
       });
       const data = await res.json();
       if (data.ok) {

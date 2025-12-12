@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { decryptArrayBuffer } from '../utils/crypto.js';
+import { useWallet } from '../context/WalletContext';
 
 function HeirDashboard() {
   const [entries, setEntries] = useState([]);
@@ -19,11 +20,12 @@ function HeirDashboard() {
   const [decryptedEntries, setDecryptedEntries] = useState({});
   const [decryptedSnippets, setDecryptedSnippets] = useState({});
   const [masterPassphrase, setMasterPassphrase] = useState('');
+  const { walletAddress } = useWallet();
 
   useEffect(() => {
     const fetchDeathStatus = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/death-status?did=demo-owner`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/death-status?did=${walletAddress}`);
         const data = await res.json();
         setDeathStatus(data);
       } catch (e) {
@@ -31,7 +33,7 @@ function HeirDashboard() {
       }
     };
     fetchDeathStatus();
-  }, []);
+  }, [walletAddress]);
 
   useEffect(() => {
     let cancelled = false;
@@ -76,7 +78,7 @@ function HeirDashboard() {
     setCheckingAccess(true);
     setMessage('Checking on-chain access permissions...');
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/simulate-unlock?heir=${encodeURIComponent(heirAddress)}`);
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/simulate-unlock?heir=${encodeURIComponent(heirAddress)}&did=${walletAddress}`);
       const data = await res.json();
       setUnlockResult(data);
       if (data.allowed) {
@@ -121,7 +123,7 @@ function HeirDashboard() {
       const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/register-heir`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ heir: heirAddress }),
+        body: JSON.stringify({ heir: heirAddress, did: walletAddress }),
       });
       const data = await res.json();
 
@@ -163,7 +165,7 @@ function HeirDashboard() {
       const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/notify-death`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ did: 'demo-owner' }),
+        body: JSON.stringify({ did: walletAddress }),
       });
       const data = await res.json();
       if (data.ok) {
@@ -202,7 +204,7 @@ function HeirDashboard() {
         setMessage('Downloading encrypted blob...');
         setModalNote('Downloading encrypted blob...');
       }
-      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/file/${entry.id}?as=encrypted`);
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/file/${entry.id}?as=encrypted&did=${walletAddress}`);
       const buffer = await res.arrayBuffer();
       if (!silent) {
         setMessage('Decrypting in browser...');
@@ -257,7 +259,7 @@ function HeirDashboard() {
     setModalNote('Generating AI legacy narrative...');
     try {
       const payload = {
-        did: entry.ownerDid || 'demo-owner',
+        did: entry.ownerDid || walletAddress,
         memory: {
           id: entry.id,
           title: getEntryTitle(entry),

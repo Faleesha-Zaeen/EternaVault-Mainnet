@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { connectWallet, shortAddress } from '../utils/web3';
+import { useWallet } from '../context/WalletContext';
 
 function Landing() {
   const navigate = useNavigate();
   const [connected, setConnected] = useState(false);
+  const { connect: connectGlobalWallet, walletAddress } = useWallet();
 
-  const handleConnect = () => {
-    // TODO: Wire real wallet connection (e.g., MetaMask, QIE wallet)
-    setConnected(true);
+  const handleConnect = async () => {
+    try {
+      const wallet = await connectWallet();
+      if (wallet?.address) {
+        await connectGlobalWallet();
+        setConnected(true);
+      }
+    } catch (err) {
+      console.error('Wallet connection error:', err);
+    }
   };
 
   return (
@@ -37,7 +47,7 @@ function Landing() {
         onClick={handleConnect}
         className="mt-8 px-5 py-2.5 rounded-lg border border-white/5 bg-[#111317] text-sm text-slate-200 shadow-[0_15px_45px_rgba(0,0,0,0.4)] hover:border-[#6aa4ff]"
       >
-        {connected ? 'Wallet Connected (stub)' : 'Connect Wallet'}
+        {walletAddress ? `Connected: ${shortAddress(walletAddress)}` : 'Connect Wallet'}
       </button>
       <p className="mt-4 text-xs text-slate-500 max-w-sm">
         This demo does not send real transactions yet. In a full version,
