@@ -28,3 +28,5 @@
 ## CI Considerations
 - Mock Supabase + RPC during CI to avoid hitting live services; environment variables can point to local dockerized services.
 - For deterministic contract tests, Hardhat’s default network is already deterministic; avoid forking mainnet unless necessary.
+
+> Note: Current backend tests assert the HTTP 200 response and `{ id }` payload for uploads. They do not verify internal Supabase insert behavior in this version.

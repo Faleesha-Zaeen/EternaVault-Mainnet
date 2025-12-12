@@ -4,11 +4,11 @@
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `POST` | `/api/upload` | Accept encrypted file + metadata, persist to Supabase, optional CID
-| `GET` | `/api/files?did=...` | List encrypted records for a DID
+| `GET` | `/api/files?did=<ownerDid>` | List encrypted records for a DID
 | `GET` | `/api/file/:id?as=encrypted` | Stream encrypted blob back to browser
 | `POST` | `/api/register-did` | Mint demo DIDs and store in Supabase
 | `POST` | `/api/register-heir` | Call `LegacyVault.registerHeirs`
-| `GET` | `/api/simulate-unlock?heir=...` | Check `canAccess` before revealing entries
+| `GET` | `/api/simulate-unlock?did=<ownerDid>&heir=<heirDid>` | Check `canAccess` before revealing entries
 | `POST` | `/api/notify-death` | Set death status + call `markDeceased`
 | `GET` | `/api/death-status?did=...` | Retrieve latest death/activation payload
 | `POST` | `/api/generate-story` | Invoke OpenRouter for AI memorial text
@@ -31,12 +31,13 @@
   - `400 Missing file/meta/ownerDid`
   - `500 Upload failed` if Supabase Storage errors out
 
-### GET /api/files?did=demo-owner
-- Returns array sorted by `timestamp desc` each containing `id`, `storedPath`, `meta`, `cid`, `anchored`, `anchorTxHash` if available.
+### GET /api/files?did=<ownerDid>
+ Returns array sorted by `timestamp desc` each containing `id`, `storedPath`, `meta`, `cid`, `anchored`, `anchorTxHash` if available.
 
 ### GET /api/file/:id?as=encrypted
-- Valid `as` currently equals `encrypted`.
-- Streams raw ciphertext with headers `Content-Type: application/octet-stream` and `Content-Length`.
+ Reads Supabase files for the specified DID.
+ The backend requires a `did` query parameter and filters all unlock logic per DID.
+ Calls `contract.canAccess(heir)`; returns `{ allowed: boolean, files: [...] }` (files array empty when false).
 - Errors: `404 Not found`, `500 Download failed` if Supabase Storage cannot fetch data.
 
 ### POST /api/register-heir
@@ -44,7 +45,7 @@
 - Calls `LegacyVault.registerHeirs([heir])` using backend signer.
 - Response: `{ ok: true, heir, txHash }` or `500` with contract error message.
 
-### GET /api/simulate-unlock?heir=0xabc
+### GET /api/simulate-unlock?did=<ownerDid>&heir=<heirDid>
 - Reads Supabase files for demo DID `demo-owner`.
 - Calls `contract.canAccess(heir)`; returns `{ allowed: boolean, files: [...] }` (files array empty when false).
 

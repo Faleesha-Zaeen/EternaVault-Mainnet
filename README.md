@@ -65,6 +65,14 @@ Detailed environment prep, deployment scripts, and testing notes → [`docs/setu
 | `WEB3_STORAGE_TOKEN` | Optional token for pushing encrypted blobs to Web3.Storage. |
 | `RPC_URL` / `CHAIN_ID` | QIE Mainnet endpoint (`1990`) for Hardhat + backend calls. |
 
+Additional backend-specific variables:
+- `SUPABASE_SERVICE_ROLE_KEY` – service key for privileged Supabase writes.
+- `QIE_RPC_URL` – QIE mainnet RPC endpoint consumed by the backend signer.
+- `PRIVATE_KEY` – signer key used for contract interactions.
+- `VAULT_ADDRESS` – deployed `LegacyVault` contract address.
+- `SUPABASE_BUCKET` – bucket name that stores encrypted blobs (defaults to `encrypted-files`).
+- `SUPABASE_TABLE_PROFILES` – table name used for tokenization metadata (`vault_profiles` by default).
+
 ## Project Structure
 ```
 ├── backend/
