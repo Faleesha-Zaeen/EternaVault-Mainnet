@@ -1,5 +1,12 @@
 # EternaVault – QIE Mainnet Digital Legacy Vault
 
+Families keep their most important memories and secrets scattered across devices, emails, and cloud accounts. 
+When someone passes away, heirs often cannot access any of it securely-or prove they are even eligible. 
+Executors are left juggling screenshots, notarized letters, and outdated password spreadsheets, none of which provide real trust or auditability.
+
+EternaVault solves this by offering a fully verifiable, client-side encrypted digital legacy vault anchored on QIE Mainnet.
+
+
 **TL;DR**
 - Client-side encrypted inheritance vault anchored on QIE Mainnet (chainId 1990).
 - Owners encrypt memories locally with AES-GCM and store ciphertext in Supabase, optionally pinning to Web3.Storage/IPFS.
