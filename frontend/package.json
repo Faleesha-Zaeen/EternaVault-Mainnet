@@ -10,6 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "@web3-storage/w3up-client": "^17.3.0",
     "axios": "^1.13.2",
     "ethers": "^6.16.0",

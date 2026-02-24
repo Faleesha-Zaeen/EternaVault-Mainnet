@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import Landing from './pages/Landing.jsx';
 import Upload from './pages/Upload.jsx';
 import Timeline from './pages/Timeline.jsx';
@@ -39,6 +40,7 @@ function App() {
       <footer className="border-t border-white/5 text-xs text-[#8A8F99] py-4 text-center">
         Prototype for QIE Hackathon – Not legal advice or production-ready.
       </footer>
+      <Analytics />
     </div>
   );
 }
